@@ -1,6 +1,5 @@
 package gui.view.applicationpane.configview;
 
-import appl.config.Config;
 import gui.controller.ConfigController;
 import gui.view.applicationpane.SubViews;
 import javafx.collections.FXCollections;
@@ -12,15 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.File;
-import java.util.Optional;
 
 /**
  * Created by ca on 16/07/16.

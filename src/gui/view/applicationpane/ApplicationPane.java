@@ -7,9 +7,6 @@ import gui.view.applicationpane.configview.ConfigView;
 import gui.view.applicationpane.controlview.ControlView;
 import gui.view.applicationpane.debugview.DebugView;
 import gui.view.applicationpane.imageviewer.ImageViewer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,6 +26,7 @@ public class ApplicationPane extends GridPane{
 
         ConfigView configView = new ConfigView(configController);
         ControlView controlView = new ControlView(controlsController);
+        controlsController.setControlView(controlView);
         DebugView debugView = new DebugView();
         HBox controlElements = new HBox(configView.getNode(), debugView.getNode(), controlView.getNode());
 

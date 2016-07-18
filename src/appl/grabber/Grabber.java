@@ -1,8 +1,8 @@
 package appl.grabber;
 
 import appl.camera.Camera;
-import appl.config.Config;
 import appl.grabber.exceptions.GrabberException;
+import javafx.beans.property.BooleanProperty;
 
 /**
  * Created by ca on 16/07/16.
@@ -13,7 +13,7 @@ public interface Grabber {
 
     void setCamera(String name) throws GrabberException;
 
-    boolean isReady();
+    BooleanProperty isRunning();
 
     void start() throws GrabberException;
 

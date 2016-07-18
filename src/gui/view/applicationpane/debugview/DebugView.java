@@ -3,11 +3,7 @@ package gui.view.applicationpane.debugview;
 import gui.view.applicationpane.SubViews;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.text.*;
 import javafx.scene.text.Font;
-
-import java.awt.*;
 
 /**
  * Created by ca on 16/07/16.

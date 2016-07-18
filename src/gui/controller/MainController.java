@@ -2,7 +2,6 @@ package gui.controller;
 
 import appl.config.Config;
 import appl.grabber.Grabber;
-import appl.grabber.exceptions.GrabberException;
 import gui.view.mainstage.MainStage;
 
 /**

@@ -6,26 +6,29 @@ import appl.config.Config;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
 import com.github.sarxos.webcam.Webcam;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 /**
  * Created by ca on 16/07/16.
  */
 public class GrabberImpl implements Grabber {
 
+    private BooleanProperty isReady = new SimpleBooleanProperty();
+
     private Config config;
     private Camera camera;
     private ScheduledExecutorService executorService;
     private ScheduledFuture cameraTask;
 
-    private boolean isRunning = false;
+    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
 
     public GrabberImpl(Config config) {
         if (config == null) {
@@ -51,28 +54,28 @@ public class GrabberImpl implements Grabber {
     }
 
     @Override
-    public void start() throws GrabberException {
-        if (!isReady()) {
-            throw new GrabberException("Grabber was not initialized.");
-        }
-        boolean isReady = camera.makeItReady();
+    public BooleanProperty isRunning() {
+        return isRunning;
+    }
 
-        if (isReady) {
+    @Override
+    public void start() throws GrabberException {
+        isRunning.set(true);
+        if (makeCameraReady()) {
             System.out.println("Grabber starts working: " + new Date().toString());
-            isRunning = true;
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(config.getRepetitionTime()), TimeUnit.SECONDS);
         } else {
-            // TODO
+            isRunning.set(false);
         }
     }
 
     @Override
     public void stop() throws GrabberException {
-        if (!isRunning || cameraTask == null) {
+        if (!isRunning.getValue() || cameraTask == null) {
             throw new GrabberException("Grabber cannot get stopped because it isn't running.");
         }
         System.out.println("Grabber stopps working.");
-        isRunning = false;
+        isRunning.set(false);
         cameraTask.cancel(true);
         // executorService.shutdown();
         // no busy wait, perform resets
@@ -84,7 +87,7 @@ public class GrabberImpl implements Grabber {
         executorService.shutdown();
     }
 
-    public boolean isReady() {
-        return config != null;
+    private boolean makeCameraReady() {
+        return camera.makeItReady();
     }
 }

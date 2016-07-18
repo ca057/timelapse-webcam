@@ -1,12 +1,14 @@
 package gui.view.applicationpane.controlview;
 
 import gui.controller.ControlsController;
+import gui.controller.exceptions.ControllerException;
 import gui.view.applicationpane.SubViews;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -14,25 +16,44 @@ import javafx.scene.layout.VBox;
  */
 public class ControlView implements SubViews{
 
+    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
+
     private VBox elementContainer;
     private ControlsController controlsController;
 
     public ControlView(ControlsController controlsController) {
         if (controlsController == null) {
-            // TODO
+            throw new IllegalArgumentException("Passed ControlsController is null.");
         }
         this.controlsController = controlsController;
         elementContainer = new VBox(createStartButton(), createStopButton());
     }
 
+    public boolean isIsRunning() {
+        return isRunning.get();
+    }
+
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning.set(isRunning);
+    }
+
+    public BooleanProperty isRunningProperty() {
+        return isRunning;
+    }
+
     private Node createStartButton() {
         Button startButton = new Button();
         startButton.setText("START");
-
+        startButton.disableProperty().bind(isRunning);
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                controlsController.startGrabbing();
+                try {
+                    event.consume();
+                    controlsController.startGrabbing();
+                } catch (ControllerException e) {
+                    // TODO show error
+                }
             }
         });
         return startButton;
@@ -45,7 +66,11 @@ public class ControlView implements SubViews{
         stopButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                controlsController.stopGrabbing();
+                try {
+                    controlsController.stopGrabbing();
+                } catch (ControllerException e) {
+                    // TODO show error view
+                }
             }
         });
         return stopButton;

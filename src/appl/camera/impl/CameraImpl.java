@@ -4,14 +4,10 @@ import appl.camera.Camera;
 import com.github.sarxos.webcam.Webcam;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Created by ca on 16/07/16.
@@ -63,6 +59,6 @@ public class CameraImpl implements Camera {
         if (webcam == null) {
             // TODO
         }
-        return webcam.open();
+        return webcam.isOpen() || webcam.open();
     }
 }

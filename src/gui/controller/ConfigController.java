@@ -2,7 +2,6 @@ package gui.controller;
 
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
-import appl.grabber.impl.GrabberImpl;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -11,7 +10,6 @@ import javafx.stage.Window;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
