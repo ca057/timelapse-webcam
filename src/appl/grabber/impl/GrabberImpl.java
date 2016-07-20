@@ -6,15 +6,14 @@ import appl.config.Config;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
 import com.github.sarxos.webcam.Webcam;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  * Created by ca on 16/07/16.
@@ -63,6 +62,7 @@ public class GrabberImpl implements Grabber {
         isRunning.set(true);
         if (makeCameraReady()) {
             System.out.println("Grabber starts working: " + new Date().toString());
+            camera.shouldListenForWebcams(false);
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(config.getRepetitionTime()), TimeUnit.SECONDS);
         } else {
             isRunning.set(false);
@@ -76,6 +76,7 @@ public class GrabberImpl implements Grabber {
         }
         System.out.println("Grabber stopps working.");
         isRunning.set(false);
+        camera.shouldListenForWebcams(true);
         cameraTask.cancel(true);
         // executorService.shutdown();
         // no busy wait, perform resets

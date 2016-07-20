@@ -2,12 +2,11 @@ package appl.camera.impl;
 
 import appl.camera.Camera;
 import com.github.sarxos.webcam.Webcam;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 /**
  * Created by ca on 16/07/16.
@@ -17,7 +16,6 @@ public class CameraImpl implements Camera {
     private Webcam webcam;
 
     // private ImageWriter writer;
-
     public CameraImpl() {
         webcam = Webcam.getDefault();
         // writer = ImageIO.getImageWritersByFormatName("jpg").next();
@@ -60,5 +58,16 @@ public class CameraImpl implements Camera {
             // TODO
         }
         return webcam.isOpen() || webcam.open();
+    }
+
+    @Override
+    public void shouldListenForWebcams(boolean shouldListen) {
+        if (shouldListen) {
+            if (!Webcam.getDiscoveryService().isRunning()) {
+                Webcam.getDiscoveryService().start();
+            }
+        } else if (Webcam.getDiscoveryService().isRunning()) {
+            Webcam.getDiscoveryService().stop();
+        }
     }
 }
