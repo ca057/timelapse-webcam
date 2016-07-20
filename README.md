@@ -4,4 +4,17 @@ __status: WIP__
 
 Java application for using the webcam to capture multiple images with a fixed repetition rate.
 
-The application uses the [webcam-capture](https://github.com/sarxos/webcam-capture)-library for access to the webcam and capturing the image and provides a GUI to set all needed parameters and to get a live preview of the recent image.
+## Features (aka TODO)
+
+- [ ] set the directory where the images are saved
+- [ ] set the time between two images and the time how long the capturing should run
+- [ ] customize the filename
+- [ ] write the timestamp into the metadata
+- [ ] choose the file type (JPEG/PNG/...)
+- [ ] provide a live view before capturing
+- [ ] display the latest captured image
+- [ ] take a test image and calculate the approximate file size and amount of images
+
+## Credits
+
+- [webcam-capture](https://github.com/sarxos/webcam-capture) by [sarxos](https://github.com/sarxos)
