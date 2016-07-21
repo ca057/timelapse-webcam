@@ -18,7 +18,6 @@ Java application for using the webcam to capture multiple images with a fixed re
 
 ### Development
 - [ ] build for mutiple OS
-- [ ] dependency management
 
 ## Credits
 
