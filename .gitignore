@@ -12,7 +12,6 @@ fabric.properties
 .fuse_hidden*
 .directory
 .Trash-*
-/nbproject
 *.class
 .mtj.tmp/
 *.jar

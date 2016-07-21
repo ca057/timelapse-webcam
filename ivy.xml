@@ -1,0 +1,6 @@
+<ivy-module version="2.0">
+    <info organisation="christianost" module="timelapse-webcam" />
+    <dependencies>
+        <dependency org="com.github.sarxos" name="webcam-capture" rev="0.3.10"/>
+    </dependencies>
+</ivy-module>
