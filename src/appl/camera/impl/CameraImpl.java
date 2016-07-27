@@ -1,6 +1,7 @@
 package appl.camera.impl;
 
 import appl.camera.Camera;
+import appl.camera.exceptions.CameraException;
 import com.github.sarxos.webcam.Webcam;
 import java.io.File;
 import java.io.IOException;
@@ -55,9 +56,9 @@ public class CameraImpl implements Camera {
     }
 
     @Override
-    public boolean makeItReady() {
+    public boolean makeItReady() throws CameraException {
         if (webcam == null) {
-            // TODO
+            throw new CameraException("The camera which should get opened is not set.");
         }
         return webcam.isOpen() || webcam.open();
     }

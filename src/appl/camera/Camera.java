@@ -1,5 +1,6 @@
 package appl.camera;
 
+import appl.camera.exceptions.CameraException;
 import com.github.sarxos.webcam.Webcam;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface Camera extends Runnable {
 
     void setWebcam(Webcam webcam);
 
-    boolean makeItReady();
+    boolean makeItReady() throws CameraException;
 
     void shouldListenForWebcams(boolean value);
 }
