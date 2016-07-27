@@ -63,6 +63,7 @@ public class GrabberImpl implements Grabber {
         if (makeCameraReady()) {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
+            // TODO remove hard coded repetition time
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(config.getRepetitionTime()), TimeUnit.SECONDS);
         } else {
             isRunning.set(false);
