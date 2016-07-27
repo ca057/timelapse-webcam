@@ -1,6 +1,7 @@
 package appl.grabber.impl;
 
 import appl.camera.Camera;
+import appl.camera.exceptions.CameraException;
 import appl.camera.impl.CameraImpl;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
@@ -83,7 +84,11 @@ public class GrabberImpl implements Grabber {
         executorService.shutdown();
     }
 
-    private boolean makeCameraReady() {
-        return camera.makeItReady();
+    private boolean makeCameraReady() throws GrabberException {
+        try {
+            return camera.makeItReady();
+        } catch (CameraException e) {
+            throw new GrabberException(e.getMessage());
+        }
     }
 }
