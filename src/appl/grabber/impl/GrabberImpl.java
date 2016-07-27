@@ -2,7 +2,6 @@ package appl.grabber.impl;
 
 import appl.camera.Camera;
 import appl.camera.impl.CameraImpl;
-import appl.config.Config;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
 import com.github.sarxos.webcam.Webcam;
@@ -20,7 +19,6 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class GrabberImpl implements Grabber {
 
-    private Config config;
     private Camera camera;
     private ScheduledExecutorService executorService;
     private ScheduledFuture cameraTask;
@@ -28,11 +26,7 @@ public class GrabberImpl implements Grabber {
     private BooleanProperty isReady = new SimpleBooleanProperty();
     private BooleanProperty isRunning = new SimpleBooleanProperty(false);
 
-    public GrabberImpl(Config config) {
-        if (config == null) {
-            throw new IllegalArgumentException("The given config is null.");
-        }
-        this.config = config;
+    public GrabberImpl() {
         camera = new CameraImpl();
         executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     }
@@ -63,7 +57,7 @@ public class GrabberImpl implements Grabber {
         if (makeCameraReady()) {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
-            cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(config.getRepetitionTime()), TimeUnit.SECONDS);
+            cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(1), TimeUnit.SECONDS);
         } else {
             System.out.println("Grabber stopped working because camera is not ready." + new Date().toString());
             isRunning.setValue(false);

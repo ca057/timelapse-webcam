@@ -1,6 +1,5 @@
 package gui.controller;
 
-import appl.config.Config;
 import appl.grabber.Grabber;
 import gui.view.mainstage.MainStage;
 
@@ -17,9 +16,9 @@ public class MainController {
     private DebugController debugController;
     private ImageController imageController;
 
-    public MainController(Grabber grabber, Config config) {
-        if (grabber == null || config == null) {
-            throw new IllegalArgumentException("Passed grabber or config is null.");
+    public MainController(Grabber grabber) {
+        if (grabber == null) {
+            throw new IllegalArgumentException("Passed grabber is null.");
         }
         this.grabber = grabber;
         this.controlsController = new ControlsController(grabber);
