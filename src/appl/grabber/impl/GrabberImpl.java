@@ -20,13 +20,12 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class GrabberImpl implements Grabber {
 
-    private BooleanProperty isReady = new SimpleBooleanProperty();
-
     private Config config;
     private Camera camera;
     private ScheduledExecutorService executorService;
     private ScheduledFuture cameraTask;
 
+    private BooleanProperty isReady = new SimpleBooleanProperty();
     private BooleanProperty isRunning = new SimpleBooleanProperty(false);
 
     public GrabberImpl(Config config) {
@@ -59,13 +58,15 @@ public class GrabberImpl implements Grabber {
 
     @Override
     public void start() throws GrabberException {
-        isRunning.set(true);
+        isRunning.setValue(true);
+        System.out.println("Grabber is started: " + new Date().toString());
         if (makeCameraReady()) {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(config.getRepetitionTime()), TimeUnit.SECONDS);
         } else {
-            isRunning.set(false);
+            System.out.println("Grabber stopped working because camera is not ready." + new Date().toString());
+            isRunning.setValue(false);
         }
     }
 
@@ -74,11 +75,10 @@ public class GrabberImpl implements Grabber {
         if (!isRunning.getValue() || cameraTask == null) {
             throw new GrabberException("Grabber cannot get stopped because it isn't running.");
         }
-        System.out.println("Grabber stopps working.");
-        isRunning.set(false);
-        camera.shouldListenForWebcams(true);
         cameraTask.cancel(true);
-        // executorService.shutdown();
+        isRunning.setValue(false);
+        System.out.println("Grabber stopps working.");
+        camera.shouldListenForWebcams(true);
         // no busy wait, perform resets
     }
 

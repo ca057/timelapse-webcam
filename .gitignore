@@ -22,3 +22,7 @@ hs_err_pid*
 /build/
 /dist/
 /lib/
+
+# image files for testing
+/*.jpg
+/*.png

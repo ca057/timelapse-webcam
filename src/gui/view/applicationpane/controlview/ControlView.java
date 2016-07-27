@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 /**
  * Created by ca on 16/07/16.
  */
-public class ControlView implements SubViews{
+public class ControlView implements SubViews {
 
     private BooleanProperty isRunning = new SimpleBooleanProperty(false);
 
@@ -62,7 +62,7 @@ public class ControlView implements SubViews{
     private Node createStopButton() {
         Button stopButton = new Button();
         stopButton.setText("STOP");
-
+        stopButton.disableProperty().bind(isRunning.not());
         stopButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
