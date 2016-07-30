@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -44,26 +43,22 @@ public class ConfigView implements SubViews {
     private Node createWebcamSelection() {
         ObservableList<String> cams = FXCollections.observableList(configController.getAvailableWebcamNames());
         ComboBox<String> camSelection = new ComboBox<>(cams);
+
         camSelection.disableProperty().bind(isRunning);
-        camSelection.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                event.consume();
-                configController.setWebcam(camSelection.getValue());
-            }
+        camSelection.setOnAction((ActionEvent event) -> {
+            event.consume();
+            configController.setWebcam(camSelection.getValue());
         });
         return camSelection;
     }
 
     private Node createSaveDirectoryInput() {
         Button directorySelection = new Button("Speicherort wählen");
+
         directorySelection.disableProperty().bind(isRunning);
-        directorySelection.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                event.consume();
-                configController.chooseSaveDirectory(configInputs.getScene().getWindow());
-            }
+        directorySelection.setOnAction((ActionEvent event) -> {
+            event.consume();
+            configController.chooseSaveDirectory(configInputs.getScene().getWindow());
         });
         return directorySelection;
     }
