@@ -51,10 +51,13 @@ public class ConfigView implements SubViews {
         ObservableList<String> cams = FXCollections.observableList(configController.getAvailableWebcamNames());
         ComboBox<String> camSelection = new ComboBox<>(cams);
 
+        camSelection.valueProperty().setValue("Webcam auswählen");
+        camSelection.promptTextProperty().bind(camSelection.valueProperty());
+
         camSelection.disableProperty().bind(isRunning);
         camSelection.setOnAction((ActionEvent event) -> {
             event.consume();
-            configController.setWebcam(camSelection.getValue());
+            // configController.setWebcam(camSelection.getValue());
         });
         return camSelection;
     }
