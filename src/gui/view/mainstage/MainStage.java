@@ -2,7 +2,6 @@ package gui.view.mainstage;
 
 import gui.controller.*;
 import gui.view.applicationpane.ApplicationPane;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -13,15 +12,15 @@ import javafx.stage.WindowEvent;
 public class MainStage extends Stage {
 
     public MainStage(MainController mainController,
-                     ImageController imageController,
-                     ConfigController configController,
-                     DebugController debugController,
-                     ControlsController controlsController) {
-        if (mainController == null ||
-                imageController == null ||
-                configController == null ||
-                debugController == null ||
-                controlsController == null) {
+            ImageController imageController,
+            ConfigController configController,
+            DebugController debugController,
+            ControlsController controlsController) {
+        if (mainController == null
+                || imageController == null
+                || configController == null
+                || debugController == null
+                || controlsController == null) {
             throw new IllegalArgumentException("No MainController or ControlsController passed.");
         }
         ApplicationPane rootPane = new ApplicationPane(mainController, controlsController, configController);
@@ -30,11 +29,9 @@ public class MainStage extends Stage {
 
         this.setTitle("LKG");
         this.setScene(scene);
-        this.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent we) {
-                mainController.stopApplication();
-            }
+        this.setOnCloseRequest((WindowEvent we) -> {
+            we.consume();
+            mainController.stopApplication();
         });
     }
 }

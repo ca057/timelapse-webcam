@@ -7,6 +7,7 @@ import gui.view.applicationpane.configview.ConfigView;
 import gui.view.applicationpane.controlview.ControlView;
 import gui.view.applicationpane.debugview.DebugView;
 import gui.view.applicationpane.imageviewer.ImageViewer;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,7 +17,9 @@ import javafx.scene.layout.VBox;
  */
 public class ApplicationPane extends GridPane {
 
-    private VBox pane;
+    private final VBox pane;
+
+    private ConfigView configView;
 
     public ApplicationPane(MainController mainController, ControlsController controlsController, ConfigController configController) {
         if (mainController == null || controlsController == null || configController == null) {
@@ -24,16 +27,20 @@ public class ApplicationPane extends GridPane {
         }
         ImageViewer imageViewer = new ImageViewer();
 
-        ConfigView configView = new ConfigView(configController);
+        configView = new ConfigView(configController);
         configController.setConfigView(configView);
 
-        ControlView controlView = new ControlView(controlsController);
+        ControlView controlView = new ControlView(controlsController, this);
         controlsController.setControlView(controlView);
 
         DebugView debugView = new DebugView();
         HBox controlElements = new HBox(configView.getNode(), debugView.getNode(), controlView.getNode());
 
         pane = new VBox(imageViewer.getNode(), controlElements);
+    }
+
+    public BooleanProperty getAllConfigDoneProperty() {
+        return configView.allConfigDoneProperty();
     }
 
     public VBox getPane() {

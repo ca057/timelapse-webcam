@@ -4,10 +4,11 @@ import gui.controller.ConfigController;
 import gui.view.applicationpane.SubViews;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,7 +21,12 @@ import javafx.scene.text.Text;
  */
 public class ConfigView implements SubViews {
 
-    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
+    private final String chooseDirectoryUiText = "Speicherort wählen";
+
+    private final BooleanProperty isRunning;
+    private final StringProperty directoryName;
+
+    private final BooleanProperty allConfigDone;
 
     private ConfigController configController;
     private GridPane configInputs;
@@ -30,6 +36,11 @@ public class ConfigView implements SubViews {
             throw new IllegalArgumentException("No ConfigController passed.");
         }
         this.configController = configController;
+
+        this.isRunning = new SimpleBooleanProperty(false);
+        this.directoryName = new SimpleStringProperty(chooseDirectoryUiText);
+        this.allConfigDone = new SimpleBooleanProperty(false);
+
         configInputs = new GridPane();
         configInputs.add(new Text("Webcam"), 0, 0);
         configInputs.add(createWebcamSelection(), 1, 0);
@@ -41,29 +52,35 @@ public class ConfigView implements SubViews {
         configInputs.add(createDelayInput(), 1, 3);
     }
 
+    private void setupBindings() {
+        // TODO bind cam selection
+        allConfigDone.bind(directoryName.isNotEqualTo(chooseDirectoryUiText));
+    }
+
     private Node createWebcamSelection() {
         ObservableList<String> cams = FXCollections.observableList(configController.getAvailableWebcamNames());
         ComboBox<String> camSelection = new ComboBox<>(cams);
+
+        camSelection.valueProperty().setValue("Webcam auswählen");
+        camSelection.promptTextProperty().bind(camSelection.valueProperty());
+
         camSelection.disableProperty().bind(isRunning);
-        camSelection.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                event.consume();
-                configController.setWebcam(camSelection.getValue());
-            }
+        camSelection.setOnAction((ActionEvent event) -> {
+            event.consume();
+            configController.setWebcam(camSelection.getValue());
         });
         return camSelection;
     }
 
     private Node createSaveDirectoryInput() {
-        Button directorySelection = new Button("Speicherort wählen");
+        Button directorySelection = new Button();
+
+        directorySelection.textProperty().bind(directoryName);
         directorySelection.disableProperty().bind(isRunning);
-        directorySelection.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                event.consume();
-                configController.chooseSaveDirectory(configInputs.getScene().getWindow());
-            }
+
+        directorySelection.setOnAction((ActionEvent event) -> {
+            event.consume();
+            configController.chooseSaveDirectory(configInputs.getScene().getWindow());
         });
         return directorySelection;
     }
@@ -76,16 +93,16 @@ public class ConfigView implements SubViews {
         return new HBox();
     }
 
-    public boolean isIsRunning() {
-        return isRunning.get();
-    }
-
-    public void setIsRunning(boolean isRunning) {
-        this.isRunning.set(isRunning);
-    }
-
     public BooleanProperty isRunningProperty() {
         return isRunning;
+    }
+
+    public StringProperty directoryTextProperty() {
+        return directoryName;
+    }
+
+    public BooleanProperty allConfigDoneProperty() {
+        return allConfigDone;
     }
 
     @Override

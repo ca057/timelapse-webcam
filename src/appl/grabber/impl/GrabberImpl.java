@@ -5,7 +5,9 @@ import appl.camera.exceptions.CameraException;
 import appl.camera.impl.CameraImpl;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
+import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -20,14 +22,17 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class GrabberImpl implements Grabber {
 
-    private Camera camera;
-    private ScheduledExecutorService executorService;
+    private final Camera camera;
+    private final ScheduledExecutorService executorService;
     private ScheduledFuture cameraTask;
 
-    private BooleanProperty isReady = new SimpleBooleanProperty();
-    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
+    private final BooleanProperty isReady = new SimpleBooleanProperty();
+    private final BooleanProperty isRunning;
+
+    private Path directory;
 
     public GrabberImpl() {
+        this.isRunning = new SimpleBooleanProperty(false);
         camera = new CameraImpl();
         executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     }
@@ -55,13 +60,15 @@ public class GrabberImpl implements Grabber {
     public void start() throws GrabberException {
         isRunning.setValue(true);
         System.out.println("Grabber is started: " + new Date().toString());
-        if (makeCameraReady()) {
+        if (makeCameraReady() && checkConfiguration()) {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
+            camera.saveTo(directory);
             // TODO remove hard coded repetition time
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(1), TimeUnit.SECONDS);
         } else {
-            System.out.println("Grabber stopped working because camera is not ready." + new Date().toString());
+            // TODO show an prompt to the user if something is not set
+            System.out.println("Grabber stopped working because camera or the configuration is not ready: " + new Date().toString());
             isRunning.setValue(false);
         }
     }
@@ -90,5 +97,17 @@ public class GrabberImpl implements Grabber {
         } catch (CameraException e) {
             throw new GrabberException(e.getMessage());
         }
+    }
+
+    private boolean checkConfiguration() {
+        return Checker.isCorrectDirectory.test(directory);
+    }
+
+    @Override
+    public void setDirectoryToSave(Path directory) {
+        if (Checker.isCorrectDirectory.negate().test(directory)) {
+            throw new IllegalArgumentException("The passed directory is null or does not lead to an directory.");
+        }
+        this.directory = directory;
     }
 }
