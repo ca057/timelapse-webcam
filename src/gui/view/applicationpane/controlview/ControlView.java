@@ -2,7 +2,9 @@ package gui.view.applicationpane.controlview;
 
 import gui.controller.ControlsController;
 import gui.controller.exceptions.ControllerException;
+import gui.view.applicationpane.ApplicationPane;
 import gui.view.applicationpane.SubViews;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -16,16 +18,20 @@ import javafx.scene.layout.VBox;
  */
 public class ControlView implements SubViews {
 
-    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
+    private final BooleanProperty isRunning;
+
+    private final ApplicationPane applicationPane;
 
     private VBox elementContainer;
     private ControlsController controlsController;
 
-    public ControlView(ControlsController controlsController) {
-        if (controlsController == null) {
-            throw new IllegalArgumentException("Passed ControlsController is null.");
+    public ControlView(ControlsController controlsController, ApplicationPane pane) {
+        if (controlsController == null || pane == null) {
+            throw new IllegalArgumentException("Passed ControlsController or ApplicationPane is null.");
         }
         this.controlsController = controlsController;
+        this.isRunning = new SimpleBooleanProperty(false);
+        this.applicationPane = pane;
         elementContainer = new VBox(createStartButton(), createStopButton());
     }
 
@@ -44,16 +50,14 @@ public class ControlView implements SubViews {
     private Node createStartButton() {
         Button startButton = new Button();
         startButton.setText("START");
-        startButton.disableProperty().bind(isRunning);
-        startButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    event.consume();
-                    controlsController.startGrabbing();
-                } catch (ControllerException e) {
-                    // TODO show error
-                }
+
+        startButton.disableProperty().bind(Bindings.and(isRunning, applicationPane.getAllConfigDoneProperty().not()));
+        startButton.setOnAction((ActionEvent event) -> {
+            try {
+                event.consume();
+                controlsController.startGrabbing();
+            } catch (ControllerException e) {
+                // TODO show error
             }
         });
         return startButton;

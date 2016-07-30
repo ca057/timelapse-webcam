@@ -21,8 +21,12 @@ import javafx.scene.text.Text;
  */
 public class ConfigView implements SubViews {
 
+    private final String chooseDirectoryUiText = "Speicherort wählen";
+
     private final BooleanProperty isRunning;
-    private final StringProperty directoryText;
+    private final StringProperty directoryName;
+
+    private final BooleanProperty allConfigDone;
 
     private ConfigController configController;
     private GridPane configInputs;
@@ -34,7 +38,8 @@ public class ConfigView implements SubViews {
         this.configController = configController;
 
         this.isRunning = new SimpleBooleanProperty(false);
-        this.directoryText = new SimpleStringProperty("Speicherort wählen");
+        this.directoryName = new SimpleStringProperty(chooseDirectoryUiText);
+        this.allConfigDone = new SimpleBooleanProperty(false);
 
         configInputs = new GridPane();
         configInputs.add(new Text("Webcam"), 0, 0);
@@ -47,6 +52,11 @@ public class ConfigView implements SubViews {
         configInputs.add(createDelayInput(), 1, 3);
     }
 
+    private void setupBindings() {
+        // TODO bind cam selection
+        allConfigDone.bind(directoryName.isNotEqualTo(chooseDirectoryUiText));
+    }
+
     private Node createWebcamSelection() {
         ObservableList<String> cams = FXCollections.observableList(configController.getAvailableWebcamNames());
         ComboBox<String> camSelection = new ComboBox<>(cams);
@@ -57,7 +67,7 @@ public class ConfigView implements SubViews {
         camSelection.disableProperty().bind(isRunning);
         camSelection.setOnAction((ActionEvent event) -> {
             event.consume();
-            // configController.setWebcam(camSelection.getValue());
+            configController.setWebcam(camSelection.getValue());
         });
         return camSelection;
     }
@@ -65,7 +75,7 @@ public class ConfigView implements SubViews {
     private Node createSaveDirectoryInput() {
         Button directorySelection = new Button();
 
-        directorySelection.textProperty().bind(directoryText);
+        directorySelection.textProperty().bind(directoryName);
         directorySelection.disableProperty().bind(isRunning);
 
         directorySelection.setOnAction((ActionEvent event) -> {
@@ -88,7 +98,11 @@ public class ConfigView implements SubViews {
     }
 
     public StringProperty directoryTextProperty() {
-        return directoryText;
+        return directoryName;
+    }
+
+    public BooleanProperty allConfigDoneProperty() {
+        return allConfigDone;
     }
 
     @Override
