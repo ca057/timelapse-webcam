@@ -2,9 +2,11 @@ package appl.camera.impl;
 
 import appl.camera.Camera;
 import appl.camera.exceptions.CameraException;
+import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -16,6 +18,8 @@ public class CameraImpl implements Camera {
 
     private Webcam webcam;
 
+    private Path directory;
+
     // private ImageWriter writer;
     public CameraImpl() {
         webcam = Webcam.getDefault();
@@ -24,17 +28,19 @@ public class CameraImpl implements Camera {
 
     @Override
     public void run() {
-        if (!webcam.isOpen()) {
-            System.err.println("Webcam is not open!");
+        if (!webcam.isOpen() && Checker.isCorrectDirectory.negate().test(directory)) {
+            System.err.println("Webcam is not open or directory is not set.");
+            // TODO improve exception handling
+            return;
         }
         String fileName = new Date().toString().replace(" ", "_").concat(".jpg");
         System.out.println("Camera takes an image: " + fileName);
 
         try {
-            ImageIO.write(webcam.getImage(), "JPG", new File(fileName));
-        } catch (IOException e) {
-            // TODO
-            e.printStackTrace();
+            File file = new File(directory.toFile(), fileName);
+            ImageIO.write(webcam.getImage(), "JPG", file);
+        } catch (IOException ignore) {
+            // TODO ignore it but log it in debug view
         }
     }
 
@@ -72,5 +78,13 @@ public class CameraImpl implements Camera {
         } else if (Webcam.getDiscoveryService().isRunning()) {
             Webcam.getDiscoveryService().stop();
         }
+    }
+
+    @Override
+    public void saveTo(Path path) {
+        if (Checker.isCorrectDirectory.negate().test(path)) {
+            throw new IllegalArgumentException("The passed path is either null or does not lead to an directory.");
+        }
+        this.directory = path;
     }
 }

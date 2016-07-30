@@ -2,6 +2,7 @@ package appl.grabber;
 
 import appl.camera.Camera;
 import appl.grabber.exceptions.GrabberException;
+import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
 
 /**
@@ -11,9 +12,11 @@ public interface Grabber {
 
     Camera getCamera();
 
+    BooleanProperty isRunning();
+
     void setCamera(String name) throws GrabberException;
 
-    BooleanProperty isRunning();
+    void setDirectoryToSave(Path directory);
 
     void start() throws GrabberException;
 
