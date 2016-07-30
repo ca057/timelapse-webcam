@@ -5,8 +5,8 @@ import appl.camera.exceptions.CameraException;
 import appl.camera.impl.CameraImpl;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
+import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Optional;
@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -29,8 +28,6 @@ public class GrabberImpl implements Grabber {
 
     private final BooleanProperty isReady = new SimpleBooleanProperty();
     private final BooleanProperty isRunning;
-
-    private Predicate<Path> isCorrectDirectory = dir -> dir != null && Files.isDirectory(dir);
 
     private Path directory;
 
@@ -70,7 +67,8 @@ public class GrabberImpl implements Grabber {
             // TODO remove hard coded repetition time
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(1), TimeUnit.SECONDS);
         } else {
-            System.out.println("Grabber stopped working because camera is not ready." + new Date().toString());
+            // TODO show an prompt to the user if something is not set
+            System.out.println("Grabber stopped working because camera or the configuration is not ready: " + new Date().toString());
             isRunning.setValue(false);
         }
     }
@@ -102,12 +100,12 @@ public class GrabberImpl implements Grabber {
     }
 
     private boolean checkConfiguration() {
-        return isCorrectDirectory.test(directory);
+        return Checker.isCorrectDirectory.test(directory);
     }
 
     @Override
     public void setDirectoryToSave(Path directory) {
-        if (isCorrectDirectory.negate().test(directory)) {
+        if (Checker.isCorrectDirectory.negate().test(directory)) {
             throw new IllegalArgumentException("The passed directory is null or does not lead to an directory.");
         }
         this.directory = directory;
