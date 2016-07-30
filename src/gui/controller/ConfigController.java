@@ -56,6 +56,7 @@ public class ConfigController {
         Optional<File> directory = Optional.ofNullable(dirChooser.showDialog(window));
         if (directory.isPresent()) {
             grabber.setDirectoryToSave(directory.get().toPath());
+            configView.directoryTextProperty().setValue(directory.get().toString());
         } else {
             // TODO show error window
         }
