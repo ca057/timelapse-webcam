@@ -15,9 +15,11 @@ Java application for using the webcam to capture multiple images with a fixed re
 - [ ] provide a live view before capturing
 - [ ] display the latest captured image
 - [ ] take a test image and calculate the approximate file size and amount of images
+- [ ] support grabbing with multiple cameras parallel
 
 ### Development
 - [ ] build for mutiple OS
+- [ ] move UI in a separate Thread
 
 ## Credits
 
