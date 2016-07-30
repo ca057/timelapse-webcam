@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 /**
  * Created by ca on 16/07/16.
  */
-public class ApplicationPane extends GridPane{
+public class ApplicationPane extends GridPane {
 
     private VBox pane;
 
@@ -25,28 +25,15 @@ public class ApplicationPane extends GridPane{
         ImageViewer imageViewer = new ImageViewer();
 
         ConfigView configView = new ConfigView(configController);
+        configController.setConfigView(configView);
+
         ControlView controlView = new ControlView(controlsController);
         controlsController.setControlView(controlView);
+
         DebugView debugView = new DebugView();
         HBox controlElements = new HBox(configView.getNode(), debugView.getNode(), controlView.getNode());
 
         pane = new VBox(imageViewer.getNode(), controlElements);
-        /*
-
-        Button stopButton = new Button();
-        stopButton.setCancelButton(true);
-        stopButton.setText("STOP");
-
-        stopButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                mainController.stopGrabbing();
-            }
-        });
-
-        pane.add(startButton, 0, 0);
-        pane.add(stopButton, 0, 1);
-        */
     }
 
     public VBox getPane() {
