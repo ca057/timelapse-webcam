@@ -2,15 +2,15 @@ package gui.controller;
 
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-
+import gui.view.applicationpane.configview.ConfigView;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * Created by ca on 16/07/16.
@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 public class ConfigController {
 
     private Grabber grabber;
+
+    private ConfigView configView;
 
     public ConfigController(Grabber grabber) {
         if (grabber == null) {
@@ -50,5 +52,13 @@ public class ConfigController {
         dirStage.initModality(Modality.APPLICATION_MODAL);
         dirChooser.setTitle("Speicherort für Bilder wählen");
         Optional<File> file = Optional.ofNullable(dirChooser.showDialog(window));
+    }
+
+    public void setConfigView(ConfigView configView) {
+        if (configView == null) {
+            throw new IllegalArgumentException("Passed ConfigView is null.");
+        }
+        this.configView = configView;
+        configView.isRunningProperty().bind(grabber.isRunning());
     }
 }

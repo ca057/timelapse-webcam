@@ -1,6 +1,7 @@
 package appl.camera.impl;
 
 import appl.camera.Camera;
+import appl.camera.exceptions.CameraException;
 import com.github.sarxos.webcam.Webcam;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class CameraImpl implements Camera {
         try {
             ImageIO.write(webcam.getImage(), "JPG", new File(fileName));
         } catch (IOException e) {
+            // TODO
             e.printStackTrace();
         }
     }
@@ -46,16 +48,17 @@ public class CameraImpl implements Camera {
         if (webcam == null) {
             throw new IllegalArgumentException("Passed webcam is null.");
         }
-        if (webcam.isOpen()) {
-            webcam.close();
+        // TODO check if it is needed to close the camera first
+        if (this.webcam.isOpen()) {
+            this.webcam.close();
         }
         this.webcam = webcam;
     }
 
     @Override
-    public boolean makeItReady() {
+    public boolean makeItReady() throws CameraException {
         if (webcam == null) {
-            // TODO
+            throw new CameraException("The camera which should get opened is not set.");
         }
         return webcam.isOpen() || webcam.open();
     }

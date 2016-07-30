@@ -2,6 +2,8 @@ package gui.view.applicationpane.configview;
 
 import gui.controller.ConfigController;
 import gui.view.applicationpane.SubViews;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +19,8 @@ import javafx.scene.text.Text;
  * Created by ca on 16/07/16.
  */
 public class ConfigView implements SubViews {
+
+    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
 
     private ConfigController configController;
     private GridPane configInputs;
@@ -40,6 +44,7 @@ public class ConfigView implements SubViews {
     private Node createWebcamSelection() {
         ObservableList<String> cams = FXCollections.observableList(configController.getAvailableWebcamNames());
         ComboBox<String> camSelection = new ComboBox<>(cams);
+        camSelection.disableProperty().bind(isRunning);
         camSelection.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -52,6 +57,7 @@ public class ConfigView implements SubViews {
 
     private Node createSaveDirectoryInput() {
         Button directorySelection = new Button("Speicherort wählen");
+        directorySelection.disableProperty().bind(isRunning);
         directorySelection.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -68,6 +74,18 @@ public class ConfigView implements SubViews {
 
     private Node createDelayInput() {
         return new HBox();
+    }
+
+    public boolean isIsRunning() {
+        return isRunning.get();
+    }
+
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning.set(isRunning);
+    }
+
+    public BooleanProperty isRunningProperty() {
+        return isRunning;
     }
 
     @Override

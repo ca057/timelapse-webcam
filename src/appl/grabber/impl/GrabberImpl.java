@@ -1,6 +1,7 @@
 package appl.grabber.impl;
 
 import appl.camera.Camera;
+import appl.camera.exceptions.CameraException;
 import appl.camera.impl.CameraImpl;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
@@ -57,6 +58,7 @@ public class GrabberImpl implements Grabber {
         if (makeCameraReady()) {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
+            // TODO remove hard coded repetition time
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(1), TimeUnit.SECONDS);
         } else {
             System.out.println("Grabber stopped working because camera is not ready." + new Date().toString());
@@ -82,7 +84,11 @@ public class GrabberImpl implements Grabber {
         executorService.shutdown();
     }
 
-    private boolean makeCameraReady() {
-        return camera.makeItReady();
+    private boolean makeCameraReady() throws GrabberException {
+        try {
+            return camera.makeItReady();
+        } catch (CameraException e) {
+            throw new GrabberException(e.getMessage());
+        }
     }
 }
