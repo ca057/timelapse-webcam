@@ -49,9 +49,16 @@ public class ConfigController {
         }
         DirectoryChooser dirChooser = new DirectoryChooser();
         Stage dirStage = new Stage();
+
         dirStage.initModality(Modality.APPLICATION_MODAL);
         dirChooser.setTitle("Speicherort für Bilder wählen");
-        Optional<File> file = Optional.ofNullable(dirChooser.showDialog(window));
+
+        Optional<File> directory = Optional.ofNullable(dirChooser.showDialog(window));
+        if (directory.isPresent()) {
+            grabber.setDirectoryToSave(directory.get().toPath());
+        } else {
+            // TODO show error window
+        }
     }
 
     public void setConfigView(ConfigView configView) {
