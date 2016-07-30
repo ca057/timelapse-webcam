@@ -4,6 +4,8 @@ import gui.controller.ConfigController;
 import gui.view.applicationpane.SubViews;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +21,8 @@ import javafx.scene.text.Text;
  */
 public class ConfigView implements SubViews {
 
-    private BooleanProperty isRunning = new SimpleBooleanProperty(false);
+    private final BooleanProperty isRunning;
+    private final StringProperty directoryText;
 
     private ConfigController configController;
     private GridPane configInputs;
@@ -29,6 +32,10 @@ public class ConfigView implements SubViews {
             throw new IllegalArgumentException("No ConfigController passed.");
         }
         this.configController = configController;
+
+        this.isRunning = new SimpleBooleanProperty(false);
+        this.directoryText = new SimpleStringProperty("Speicherort wählen");
+
         configInputs = new GridPane();
         configInputs.add(new Text("Webcam"), 0, 0);
         configInputs.add(createWebcamSelection(), 1, 0);
@@ -53,9 +60,11 @@ public class ConfigView implements SubViews {
     }
 
     private Node createSaveDirectoryInput() {
-        Button directorySelection = new Button("Speicherort wählen");
+        Button directorySelection = new Button();
 
+        directorySelection.textProperty().bind(directoryText);
         directorySelection.disableProperty().bind(isRunning);
+
         directorySelection.setOnAction((ActionEvent event) -> {
             event.consume();
             configController.chooseSaveDirectory(configInputs.getScene().getWindow());
@@ -71,16 +80,12 @@ public class ConfigView implements SubViews {
         return new HBox();
     }
 
-    public boolean isIsRunning() {
-        return isRunning.get();
-    }
-
-    public void setIsRunning(boolean isRunning) {
-        this.isRunning.set(isRunning);
-    }
-
     public BooleanProperty isRunningProperty() {
         return isRunning;
+    }
+
+    public StringProperty directoryTextProperty() {
+        return directoryText;
     }
 
     @Override
