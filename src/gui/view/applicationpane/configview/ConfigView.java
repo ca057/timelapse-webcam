@@ -2,16 +2,23 @@ package gui.view.applicationpane.configview;
 
 import gui.controller.ConfigController;
 import gui.view.applicationpane.SubViews;
+import java.util.function.UnaryOperator;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -25,6 +32,7 @@ public class ConfigView implements SubViews {
 
     private final BooleanProperty isRunning;
     private final StringProperty directoryName;
+    private final IntegerProperty repetitionRate;
 
     private final BooleanProperty allConfigDone;
 
@@ -40,6 +48,7 @@ public class ConfigView implements SubViews {
         this.isRunning = new SimpleBooleanProperty(false);
         this.directoryName = new SimpleStringProperty(chooseDirectoryUiText);
         this.allConfigDone = new SimpleBooleanProperty(false);
+        this.repetitionRate = new SimpleIntegerProperty(30);
 
         configInputs = new GridPane();
         configInputs.add(new Text("Webcam"), 0, 0);
@@ -90,7 +99,22 @@ public class ConfigView implements SubViews {
     }
 
     private Node createDelayInput() {
-        return new HBox();
+        TextField input = new TextField();
+        UnaryOperator<Change> filter = change -> {
+            if (change.getText().matches("\\d*")) {
+                return change;
+            }
+            return null;
+        };
+        input.setTextFormatter(new TextFormatter<>(filter));
+        input.disableProperty().bind(isRunning);
+        input.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            try {
+                repetitionRate.setValue(Integer.parseInt(newValue));
+            } catch (NumberFormatException ignore) {
+            }
+        });
+        return input;
     }
 
     public BooleanProperty isRunningProperty() {
@@ -103,6 +127,10 @@ public class ConfigView implements SubViews {
 
     public BooleanProperty allConfigDoneProperty() {
         return allConfigDone;
+    }
+
+    public IntegerProperty repetitionRateProperty() {
+        return repetitionRate;
     }
 
     @Override

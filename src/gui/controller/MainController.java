@@ -13,7 +13,6 @@ public class MainController {
 
     private ControlsController controlsController;
     private ConfigController configController;
-    private DebugController debugController;
     private ImageController imageController;
 
     public MainController(Grabber grabber) {
@@ -23,9 +22,8 @@ public class MainController {
         this.grabber = grabber;
         this.controlsController = new ControlsController(grabber);
         this.configController = new ConfigController(grabber);
-        this.debugController = new DebugController();
         this.imageController = new ImageController();
-        this.mainStage = new MainStage(this, imageController, configController, debugController, controlsController);
+        this.mainStage = new MainStage(this, imageController, configController, controlsController);
     }
 
     public void showView() {

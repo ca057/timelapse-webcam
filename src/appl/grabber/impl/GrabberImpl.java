@@ -15,7 +15,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * Created by ca on 16/07/16.
@@ -27,12 +29,13 @@ public class GrabberImpl implements Grabber {
     private ScheduledFuture cameraTask;
 
     private final BooleanProperty isReady = new SimpleBooleanProperty();
-    private final BooleanProperty isRunning;
+    private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
+
+    private final IntegerProperty repetitionRate = new SimpleIntegerProperty(1);
 
     private Path directory;
 
     public GrabberImpl() {
-        this.isRunning = new SimpleBooleanProperty(false);
         camera = new CameraImpl();
         executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     }
@@ -64,8 +67,7 @@ public class GrabberImpl implements Grabber {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
             camera.saveTo(directory);
-            // TODO remove hard coded repetition time
-            cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(1), TimeUnit.SECONDS);
+            cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(repetitionRate.getValue()), TimeUnit.SECONDS);
         } else {
             // TODO show an prompt to the user if something is not set
             System.out.println("Grabber stopped working because camera or the configuration is not ready: " + new Date().toString());
@@ -110,4 +112,10 @@ public class GrabberImpl implements Grabber {
         }
         this.directory = directory;
     }
+
+    @Override
+    public IntegerProperty getRepetitionRate() {
+        return repetitionRate;
+    }
+
 }

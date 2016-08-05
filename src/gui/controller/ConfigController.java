@@ -68,5 +68,6 @@ public class ConfigController {
         }
         this.configView = configView;
         configView.isRunningProperty().bind(grabber.isRunning());
+        grabber.getRepetitionRate().bind(configView.repetitionRateProperty());
     }
 }
