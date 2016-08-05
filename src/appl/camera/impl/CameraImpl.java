@@ -4,11 +4,14 @@ import appl.camera.Camera;
 import appl.camera.exceptions.CameraException;
 import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamDiscoveryEvent;
+import com.github.sarxos.webcam.WebcamDiscoveryListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Date;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javax.imageio.ImageIO;
 
 /**
@@ -18,11 +21,15 @@ public class CameraImpl implements Camera {
 
     private Webcam webcam;
 
+    private final ObservableList<Webcam> cameras;
+
     private Path directory;
 
     // private ImageWriter writer;
     public CameraImpl() {
+        this.cameras = FXCollections.observableArrayList(Webcam.getWebcams());
         webcam = Webcam.getDefault();
+        listenForWebcams();
         // writer = ImageIO.getImageWritersByFormatName("jpg").next();
     }
 
@@ -45,8 +52,13 @@ public class CameraImpl implements Camera {
     }
 
     @Override
-    public List<Webcam> getAvailableWebcams() {
-        return Webcam.getWebcams();
+    public ObservableList<Webcam> getAvailableWebcams() {
+        return cameras;
+    }
+
+    @Override
+    public Webcam getCurrentWebcam() {
+        return webcam;
     }
 
     @Override
@@ -54,7 +66,7 @@ public class CameraImpl implements Camera {
         if (webcam == null) {
             throw new IllegalArgumentException("Passed webcam is null.");
         }
-        // TODO check if it is needed to close the camera first
+        // TODO check if it is needed to close the current camera first
         if (this.webcam.isOpen()) {
             this.webcam.close();
         }
@@ -86,5 +98,20 @@ public class CameraImpl implements Camera {
             throw new IllegalArgumentException("The passed path is either null or does not lead to an directory.");
         }
         this.directory = path;
+    }
+
+    private void listenForWebcams() {
+        Webcam.addDiscoveryListener(new WebcamDiscoveryListener() {
+            @Override
+            public void webcamFound(WebcamDiscoveryEvent event) {
+                cameras.add(event.getWebcam());
+            }
+
+            @Override
+            public void webcamGone(WebcamDiscoveryEvent event) {
+                cameras.remove(event.getWebcam());
+            }
+        });
+
     }
 }
