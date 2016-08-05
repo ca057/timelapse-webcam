@@ -44,5 +44,4 @@ public class ControlsController {
         this.controlView = controlView;
         controlView.isRunningProperty().bind(grabber.isRunning());
     }
-
 }

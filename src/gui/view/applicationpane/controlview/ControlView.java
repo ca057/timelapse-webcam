@@ -8,7 +8,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -25,6 +24,8 @@ public class ControlView implements SubViews {
     private VBox elementContainer;
     private ControlsController controlsController;
 
+    private double prefButtonWidth = 75;
+
     public ControlView(ControlsController controlsController, ApplicationPane pane) {
         if (controlsController == null || pane == null) {
             throw new IllegalArgumentException("Passed ControlsController or ApplicationPane is null.");
@@ -33,25 +34,16 @@ public class ControlView implements SubViews {
         this.isRunning = new SimpleBooleanProperty(false);
         this.applicationPane = pane;
         elementContainer = new VBox(createStartButton(), createStopButton());
-    }
-
-    public boolean isIsRunning() {
-        return isRunning.get();
-    }
-
-    public void setIsRunning(boolean isRunning) {
-        this.isRunning.set(isRunning);
-    }
-
-    public BooleanProperty isRunningProperty() {
-        return isRunning;
+        elementContainer.setSpacing(5);
+        elementContainer.setPrefWidth(prefButtonWidth);
     }
 
     private Node createStartButton() {
         Button startButton = new Button();
         startButton.setText("START");
-
-        startButton.disableProperty().bind(Bindings.and(isRunning, applicationPane.getAllConfigDoneProperty().not()));
+        startButton.setDefaultButton(true);
+        startButton.setPrefWidth(prefButtonWidth);
+        startButton.disableProperty().bind(Bindings.or(isRunning, applicationPane.getAllConfigDoneProperty().not()));
         startButton.setOnAction((ActionEvent event) -> {
             try {
                 event.consume();
@@ -66,15 +58,14 @@ public class ControlView implements SubViews {
     private Node createStopButton() {
         Button stopButton = new Button();
         stopButton.setText("STOP");
+        stopButton.setPrefWidth(prefButtonWidth);
+        stopButton.setCancelButton(true);
         stopButton.disableProperty().bind(isRunning.not());
-        stopButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    controlsController.stopGrabbing();
-                } catch (ControllerException e) {
-                    // TODO show error view
-                }
+        stopButton.setOnAction((ActionEvent event) -> {
+            try {
+                controlsController.stopGrabbing();
+            } catch (ControllerException e) {
+                // TODO show error view
             }
         });
         return stopButton;
@@ -84,4 +75,9 @@ public class ControlView implements SubViews {
     public Node getNode() {
         return elementContainer;
     }
+
+    public BooleanProperty isRunningProperty() {
+        return isRunning;
+    }
+
 }

@@ -2,6 +2,7 @@ package appl.grabber;
 
 import appl.camera.Camera;
 import appl.grabber.exceptions.GrabberException;
+import com.github.sarxos.webcam.Webcam;
 import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -15,7 +16,7 @@ public interface Grabber {
 
     BooleanProperty isRunning();
 
-    void setCamera(String name) throws GrabberException;
+    void setCamera(Webcam camera) throws GrabberException;
 
     void setDirectoryToSave(Path directory);
 

@@ -3,14 +3,16 @@ package appl.camera;
 import appl.camera.exceptions.CameraException;
 import com.github.sarxos.webcam.Webcam;
 import java.nio.file.Path;
-import java.util.List;
+import javafx.collections.ObservableList;
 
 /**
  * Created by ca on 16/07/16.
  */
 public interface Camera extends Runnable {
 
-    List<Webcam> getAvailableWebcams();
+    ObservableList<Webcam> getAvailableWebcams();
+
+    Webcam getCurrentWebcam();
 
     void setWebcam(Webcam webcam);
 

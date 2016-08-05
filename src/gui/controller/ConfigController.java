@@ -2,11 +2,13 @@ package gui.controller;
 
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
+import com.github.sarxos.webcam.Webcam;
 import gui.view.applicationpane.configview.ConfigView;
 import java.io.File;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,25 +21,29 @@ public class ConfigController {
 
     private Grabber grabber;
 
+    private final BooleanProperty allConfigDone;
+
     private ConfigView configView;
 
     public ConfigController(Grabber grabber) {
+        this.allConfigDone = new SimpleBooleanProperty(false);
         if (grabber == null) {
             throw new IllegalArgumentException("The passed grabber is null.");
         }
         this.grabber = grabber;
     }
 
-    public List<String> getAvailableWebcamNames() {
-        return grabber.getCamera().getAvailableWebcams().stream().map(wc -> wc.getName()).collect(Collectors.toList());
+    public ObservableList<Webcam> getAvailableWebcamNames() {
+        // return grabber.getCamera().getAvailableWebcams().stream().map(wc -> wc.getName()).collect(Collectors.toList());
+        return grabber.getCamera().getAvailableWebcams();
     }
 
-    public void setWebcam(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("The passed name is null or empty.");
+    public void setWebcam(Webcam camera) {
+        if (camera == null) {
+            throw new IllegalArgumentException("The passed camera is null.");
         }
         try {
-            grabber.setCamera(name);
+            grabber.setCamera(camera);
         } catch (GrabberException e) {
             // TODO e.printStackTrace();
         }
@@ -70,4 +76,13 @@ public class ConfigController {
         configView.isRunningProperty().bind(grabber.isRunning());
         grabber.getRepetitionRate().bind(configView.repetitionRateProperty());
     }
+
+    public BooleanProperty getAllConfigDone() {
+        return allConfigDone;
+    }
+
+    public Webcam getCurrentWebcam() {
+        return grabber.getCamera().getCurrentWebcam();
+    }
+
 }

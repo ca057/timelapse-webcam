@@ -7,6 +7,7 @@ import gui.view.applicationpane.configview.ConfigView;
 import gui.view.applicationpane.controlview.ControlView;
 import gui.view.applicationpane.imageviewer.ImageViewer;
 import javafx.beans.property.BooleanProperty;
+import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,8 +34,10 @@ public class ApplicationPane extends GridPane {
         controlsController.setControlView(controlView);
 
         HBox controlElements = new HBox(configView.getNode(), controlView.getNode());
+        controlElements.setSpacing(5.0);
 
         pane = new VBox(imageViewer.getNode(), controlElements);
+        pane.setPadding(new Insets(5));
     }
 
     public BooleanProperty getAllConfigDoneProperty() {

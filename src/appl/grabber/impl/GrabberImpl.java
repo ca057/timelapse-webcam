@@ -9,7 +9,6 @@ import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
 import java.nio.file.Path;
 import java.util.Date;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -46,12 +45,11 @@ public class GrabberImpl implements Grabber {
     }
 
     @Override
-    public void setCamera(String name) throws GrabberException {
+    public void setCamera(Webcam camera) throws GrabberException {
         if (camera == null) {
-            throw new IllegalArgumentException("The given camera is null.");
+            throw new IllegalArgumentException("The passed camera is null.");
         }
-        Optional<Webcam> cam = camera.getAvailableWebcams().stream().filter(w -> name.equals(w.getName())).findFirst();
-        camera.setWebcam(cam.orElseThrow(() -> new GrabberException("The camera is not found anymore")));
+        this.camera.setWebcam(camera);
     }
 
     @Override
