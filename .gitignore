@@ -23,6 +23,7 @@ hs_err_pid*
 /dist/
 /lib/
 /apps/
+/store/
 
 # image files for testing
 /*.jpg
