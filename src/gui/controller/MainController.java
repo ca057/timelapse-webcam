@@ -31,7 +31,6 @@ public class MainController {
     }
 
     public void stopApplication() {
-        // TODO make it with futures
         grabber.shutdown();
         mainStage.close();
         System.exit(0);

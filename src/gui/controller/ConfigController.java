@@ -3,6 +3,7 @@ package gui.controller;
 import appl.grabber.Grabber;
 import appl.grabber.exceptions.GrabberException;
 import com.github.sarxos.webcam.Webcam;
+import gui.controller.exceptions.ControllerException;
 import gui.view.applicationpane.configview.ConfigView;
 import java.io.File;
 import java.util.Optional;
@@ -34,18 +35,17 @@ public class ConfigController {
     }
 
     public ObservableList<Webcam> getAvailableWebcamNames() {
-        // return grabber.getCamera().getAvailableWebcams().stream().map(wc -> wc.getName()).collect(Collectors.toList());
         return grabber.getCamera().getAvailableWebcams();
     }
 
-    public void setWebcam(Webcam camera) {
+    public void setWebcam(Webcam camera) throws ControllerException {
         if (camera == null) {
             throw new IllegalArgumentException("The passed camera is null.");
         }
         try {
             grabber.setCamera(camera);
         } catch (GrabberException e) {
-            // TODO e.printStackTrace();
+            throw new ControllerException("Setting the webcam failed: " + e.getMessage());
         }
     }
 

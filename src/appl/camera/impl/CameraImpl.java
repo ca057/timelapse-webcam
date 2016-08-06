@@ -25,19 +25,16 @@ public class CameraImpl implements Camera {
 
     private Path directory;
 
-    // private ImageWriter writer;
     public CameraImpl() {
         this.cameras = FXCollections.observableArrayList(Webcam.getWebcams());
         webcam = Webcam.getDefault();
         listenForWebcams();
-        // writer = ImageIO.getImageWritersByFormatName("jpg").next();
     }
 
     @Override
     public void run() {
         if (!webcam.isOpen() && Checker.isCorrectDirectory.negate().test(directory)) {
             System.err.println("Webcam is not open or directory is not set.");
-            // TODO improve exception handling
             return;
         }
         String fileName = new Date().toString().replace(" ", "_").concat(".jpg");
@@ -47,7 +44,7 @@ public class CameraImpl implements Camera {
             File file = new File(directory.toFile(), fileName);
             ImageIO.write(webcam.getImage(), "JPG", file);
         } catch (IOException ignore) {
-            // TODO ignore it but log it in debug view
+            System.err.println("IOException occured while writing the file: " + fileName);
         }
     }
 

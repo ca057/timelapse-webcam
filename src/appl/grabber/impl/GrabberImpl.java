@@ -82,13 +82,17 @@ public class GrabberImpl implements Grabber {
         isRunning.setValue(false);
         System.out.println("Grabber stopps working.");
         camera.shouldListenForWebcams(true);
-        // no busy wait, perform resets
     }
 
     @Override
     public void shutdown() {
-        // TODO richtig mit futures und warten
         executorService.shutdown();
+        while (!executorService.isTerminated()) {
+            try {
+                executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException ignore) {
+            }
+        }
     }
 
     private boolean makeCameraReady() throws GrabberException {

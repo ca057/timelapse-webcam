@@ -24,7 +24,7 @@ public class ControlView implements SubViews {
     private VBox elementContainer;
     private ControlsController controlsController;
 
-    private double prefButtonWidth = 75;
+    private final double prefButtonWidth = 75;
 
     public ControlView(ControlsController controlsController, ApplicationPane pane) {
         if (controlsController == null || pane == null) {
