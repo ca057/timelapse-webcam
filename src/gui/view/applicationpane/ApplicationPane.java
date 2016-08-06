@@ -23,7 +23,7 @@ public class ApplicationPane extends GridPane {
 
     public ApplicationPane(MainController mainController, ControlsController controlsController, ConfigController configController) {
         if (mainController == null || controlsController == null || configController == null) {
-            // TODO
+            throw new IllegalArgumentException("One of the passed controllers is null.");
         }
         ImageViewer imageViewer = new ImageViewer();
 

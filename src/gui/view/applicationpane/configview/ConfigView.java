@@ -2,6 +2,7 @@ package gui.view.applicationpane.configview;
 
 import com.github.sarxos.webcam.Webcam;
 import gui.controller.ConfigController;
+import gui.controller.exceptions.ControllerException;
 import gui.view.applicationpane.SubViews;
 import java.util.function.UnaryOperator;
 import javafx.beans.property.BooleanProperty;
@@ -81,7 +82,11 @@ public class ConfigView implements SubViews {
 
         camSelection.setOnAction((ActionEvent event) -> {
             event.consume();
-            configController.setWebcam(camSelection.getValue());
+            try {
+                configController.setWebcam(camSelection.getValue());
+            } catch (ControllerException ex) {
+                // TODO show error screen
+            }
         });
         return camSelection;
     }
@@ -111,6 +116,7 @@ public class ConfigView implements SubViews {
             }
             return null;
         };
+        input.setPromptText("Wiederholrate in s");
         input.setTextFormatter(new TextFormatter<>(filter));
         input.disableProperty().bind(isRunning);
         input.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
