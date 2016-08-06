@@ -27,7 +27,7 @@ public class MainStage extends Stage {
 
         this.setTitle("TIMELAPSE WEBCAM");
         this.setScene(scene);
-        this.resizableProperty().set(false);
+        this.resizableProperty().setValue(false);
         this.setOnCloseRequest((WindowEvent we) -> {
             we.consume();
             mainController.stopApplication();

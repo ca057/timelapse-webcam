@@ -14,6 +14,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,6 +24,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 /**
@@ -116,6 +118,9 @@ public class ConfigView implements SubViews {
             }
             return null;
         };
+        input.setAlignment(Pos.CENTER_RIGHT);
+        input.setStyle("-fx-font-family:monospace");
+        input.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         input.setPromptText("Wiederholrate in s");
         input.setTextFormatter(new TextFormatter<>(filter));
         input.disableProperty().bind(isRunning);
