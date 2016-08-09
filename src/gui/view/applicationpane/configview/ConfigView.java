@@ -61,7 +61,7 @@ public class ConfigView implements SubViews {
         configInputs.add(createSaveDirectoryInput(), 1, 1);
         // configInputs.add(new Text("Bildformat"), 0, 2);
         // configInputs.add(createFileEndingInput(), 1, 2);
-        configInputs.add(new Text("Wiederholrate in s"), 0, 3);
+        configInputs.add(new Text("Wiederholrate (s)"), 0, 3);
         configInputs.add(createDelayInput(), 1, 3);
         configInputs.setHgap(5.0);
         configInputs.setVgap(5);
