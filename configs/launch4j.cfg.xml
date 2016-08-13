@@ -14,6 +14,10 @@
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
   <icon></icon>
+  <singleInstance>
+    <mutexName>Timelapse Webcam</mutexName>
+    <windowTitle></windowTitle>
+  </singleInstance>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
@@ -23,4 +27,18 @@
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
   </jre>
+  <versionInfo>
+    <fileVersion>0.1.0.0</fileVersion>
+    <txtFileVersion>0.1.0</txtFileVersion>
+    <fileDescription>Timelapse Webcam</fileDescription>
+    <copyright>2016, Christian Ost</copyright>
+    <productVersion>0.1.0.0</productVersion>
+    <txtProductVersion>0.1.0</txtProductVersion>
+    <productName>Timelapse Webcam</productName>
+    <companyName>christianost.de</companyName>
+    <internalName>timelapse-webcam</internalName>
+    <originalFilename>timelapse.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>GERMAN</language>
+  </versionInfo>
 </launch4jConfig>
