@@ -37,7 +37,7 @@ public class CameraImpl implements Camera {
             System.err.println("Webcam is not open or directory is not set.");
             return;
         }
-        String fileName = new Date().toString().replace(" ", "_").concat(".jpg");
+        String fileName = new Date().toString().replace(" ", "_").replace(":", "-").concat(".jpg");
         System.out.println("Camera takes an image: " + fileName);
 
         try {

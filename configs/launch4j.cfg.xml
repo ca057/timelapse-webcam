@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>/home/ca/projects/timelapse-webcam/store/timelapse-webcam.jar</jar>
-  <outfile>/home/ca/projects/timelapse-webcam/apps/timelapse.exe</outfile>
+  <outfile>/home/ca/projects/timelapse-webcam/store/timelapse.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
