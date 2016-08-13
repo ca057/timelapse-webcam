@@ -21,8 +21,7 @@ hs_err_pid*
 /nbproject/private/
 /build/
 /dist/
-/lib/
-/apps/
+/lib/*.jar
 /store/
 
 # image files for testing

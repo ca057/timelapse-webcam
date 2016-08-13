@@ -109,6 +109,5 @@ public class CameraImpl implements Camera {
                 cameras.remove(event.getWebcam());
             }
         });
-
     }
 }
