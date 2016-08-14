@@ -73,7 +73,6 @@ public class ConfigView implements SubViews {
     }
 
     private Node createWebcamSelection() {
-        // return grabber.getCamera().getAvailableWebcams().stream().map(wc -> wc.getName()).collect(Collectors.toList());
         ObservableList<Webcam> cams = configController.getAvailableWebcamNames();
         ComboBox<Webcam> camSelection = new ComboBox<>(cams);
         camSelection.getSelectionModel().select(configController.getCurrentWebcam());
