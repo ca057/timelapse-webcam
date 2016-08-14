@@ -61,7 +61,7 @@ public class ConfigView implements SubViews {
         configInputs.add(createSaveDirectoryInput(), 1, 1);
         // configInputs.add(new Text("Bildformat"), 0, 2);
         // configInputs.add(createFileEndingInput(), 1, 2);
-        configInputs.add(new Text("Standard: 30s"), 0, 3);
+        configInputs.add(new Text("Wiederholrate in s"), 0, 3);
         configInputs.add(createDelayInput(), 1, 3);
         configInputs.setHgap(5.0);
         configInputs.setVgap(5);
@@ -121,7 +121,7 @@ public class ConfigView implements SubViews {
         input.setAlignment(Pos.CENTER_RIGHT);
         input.setStyle("-fx-font-family:monospace");
         input.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        input.setPromptText("Wiederholrate in s");
+        input.setPromptText("Standard: 30s");
         input.setTextFormatter(new TextFormatter<>(filter));
         input.disableProperty().bind(isRunning);
         input.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
