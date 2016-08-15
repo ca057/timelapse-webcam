@@ -1,7 +1,5 @@
 package gui.controller;
 
-import appl.grabber.Grabber;
-import appl.grabber.exceptions.GrabberException;
 import gui.controller.exceptions.ControllerException;
 import gui.view.applicationpane.controlview.ControlView;
 
@@ -10,38 +8,29 @@ import gui.view.applicationpane.controlview.ControlView;
  */
 public class ControlsController {
 
-    private Grabber grabber;
+    private final MainController mainController;
 
-    private ControlView controlView;
+    private final ControlView controlView;
 
-    public ControlsController(Grabber grabber) {
-        if (grabber == null) {
-            throw new IllegalArgumentException("No grabber passed.");
+    public ControlsController(MainController mainController) {
+        if (mainController == null) {
+            throw new IllegalArgumentException("The passed MainController is null.");
         }
-        this.grabber = grabber;
+        this.mainController = mainController;
+        this.controlView = new ControlView(this);
+        controlView.isRunningProperty().bind(mainController.isRunningProperty());
+        controlView.isReadyProperty().bind(mainController.isReadyProperty());
     }
 
-    public void startGrabbing() throws ControllerException {
-        try {
-            grabber.start();
-        } catch (GrabberException e) {
-            throw new ControllerException(e.getMessage());
-        }
+    public void startTimelapse() throws ControllerException {
+        mainController.startTimelapse();
     }
 
-    public void stopGrabbing() throws ControllerException {
-        try {
-            grabber.stop();
-        } catch (GrabberException e) {
-            throw new ControllerException(e.getMessage());
-        }
+    public void stopTimelapse() throws ControllerException {
+        mainController.stopTimelapse();
     }
 
-    public void setControlView(ControlView controlView) {
-        if (controlView == null) {
-            throw new IllegalArgumentException("Passed ConfigView is null.");
-        }
-        this.controlView = controlView;
-        controlView.isRunningProperty().bind(grabber.isRunning());
+    public ControlView getControlView() {
+        return controlView;
     }
 }

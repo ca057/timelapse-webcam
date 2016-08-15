@@ -23,7 +23,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
@@ -59,8 +58,6 @@ public class ConfigView implements SubViews {
         configInputs.add(createWebcamSelection(), 1, 0);
         configInputs.add(new Text("Speicherort"), 0, 1);
         configInputs.add(createSaveDirectoryInput(), 1, 1);
-        // configInputs.add(new Text("Bildformat"), 0, 2);
-        // configInputs.add(createFileEndingInput(), 1, 2);
         configInputs.add(new Text("Wiederholrate (s)"), 0, 3);
         configInputs.add(createDelayInput(), 1, 3);
         configInputs.setHgap(5.0);
@@ -68,13 +65,13 @@ public class ConfigView implements SubViews {
     }
 
     private void setupBindings() {
-        // TODO bind cam selection
         allConfigDone.bind(directoryName.isNotEqualTo(chooseDirectoryUiText));
     }
 
     private Node createWebcamSelection() {
-        ObservableList<Webcam> cams = configController.getAvailableWebcamNames();
+        ObservableList<Webcam> cams = configController.getAvailableWebcams();
         ComboBox<Webcam> camSelection = new ComboBox<>(cams);
+
         camSelection.getSelectionModel().select(configController.getCurrentWebcam());
         camSelection.disableProperty().bind(isRunning);
 
@@ -86,9 +83,10 @@ public class ConfigView implements SubViews {
             try {
                 configController.setWebcam(camSelection.getValue());
             } catch (ControllerException ex) {
-                // TODO show error screen
+                // TODO show error view
             }
         });
+
         return camSelection;
     }
 
@@ -103,10 +101,6 @@ public class ConfigView implements SubViews {
             configController.chooseSaveDirectory(configInputs.getScene().getWindow());
         });
         return directorySelection;
-    }
-
-    private Node createFileEndingInput() {
-        return new HBox();
     }
 
     private Node createDelayInput() {

@@ -19,7 +19,7 @@ public class MainStage extends Stage {
                 || imageController == null
                 || configController == null
                 || controlsController == null) {
-            throw new IllegalArgumentException("No MainController or ControlsController passed.");
+            throw new IllegalArgumentException("One of the passed controllers is null.");
         }
         ApplicationPane rootPane = new ApplicationPane(mainController, controlsController, configController);
 
