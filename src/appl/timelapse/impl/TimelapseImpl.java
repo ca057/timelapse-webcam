@@ -114,5 +114,4 @@ public class TimelapseImpl implements Timelapse {
     public BooleanProperty isRunning() {
         return isRunning;
     }
-
 }
