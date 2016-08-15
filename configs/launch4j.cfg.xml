@@ -32,8 +32,8 @@
     <txtFileVersion>0.1.0</txtFileVersion>
     <fileDescription>Timelapse Webcam</fileDescription>
     <copyright>2016, Christian Ost</copyright>
-    <productVersion>0.1.0.0</productVersion>
-    <txtProductVersion>0.1.0</txtProductVersion>
+    <productVersion>0.1.1.0</productVersion>
+    <txtProductVersion>0.1.1</txtProductVersion>
     <productName>Timelapse Webcam</productName>
     <companyName>christianost.de</companyName>
     <internalName>timelapse-webcam</internalName>
