@@ -6,7 +6,10 @@ import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,9 +42,10 @@ public class CameraImpl implements Camera {
 
         try {
             File file = new File(directory.toFile(), fileName);
-            ImageIO.write(webcam.getImage(), "JPG", file);
+            ImageIO.write(webcam.getImage(), "jpg", file);
+            Files.setLastModifiedTime(Paths.get(file.getPath()), FileTime.fromMillis(System.currentTimeMillis()));
         } catch (IOException ignore) {
-            System.err.println("IOException occured while writing the file: " + fileName);
+            System.err.println("IOException occured while writing the file: " + fileName + "; " + ignore.getMessage());
         }
     }
 
