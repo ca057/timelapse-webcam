@@ -8,15 +8,18 @@ import gui.view.applicationpane.controlview.ControlView;
  */
 public class ControlsController {
 
-    private MainController mainController;
+    private final MainController mainController;
 
-    private ControlView controlView;
+    private final ControlView controlView;
 
     public ControlsController(MainController mainController) {
         if (mainController == null) {
             throw new IllegalArgumentException("The passed MainController is null.");
         }
         this.mainController = mainController;
+        this.controlView = new ControlView(this);
+        controlView.isRunningProperty().bind(mainController.isRunningProperty());
+        controlView.isReadyProperty().bind(mainController.isReadyProperty());
     }
 
     public void startTimelapse() throws ControllerException {
@@ -27,13 +30,7 @@ public class ControlsController {
         mainController.stopTimelapse();
     }
 
-    public void setControlView(ControlView controlView) {
-        if (controlView == null) {
-            throw new IllegalArgumentException("Passed ConfigView is null.");
-        }
-        this.controlView = controlView;
-        controlView.isRunningProperty().bind(mainController.isRunningProperty());
-        controlView.isReadyProperty().bind(mainController.isReadyProperty());
+    public ControlView getControlView() {
+        return controlView;
     }
-
 }

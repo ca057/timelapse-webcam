@@ -3,7 +3,6 @@ package gui.view.applicationpane;
 import gui.controller.ConfigController;
 import gui.controller.ControlsController;
 import gui.controller.MainController;
-import gui.view.applicationpane.controlview.ControlView;
 import gui.view.applicationpane.imageviewer.ImageViewer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,10 +23,8 @@ public class ApplicationPane extends GridPane {
         }
         ImageViewer imageViewer = new ImageViewer();
 
-        ControlView controlView = new ControlView(controlsController);
-        controlsController.setControlView(controlView);
+        HBox controlElements = new HBox(configController.getConfigView().getNode(), controlsController.getControlView().getNode());
 
-        HBox controlElements = new HBox(configController.getConfigView().getNode(), controlView.getNode());
         controlElements.setSpacing(5.0);
         controlElements.setAlignment(Pos.CENTER);
 
