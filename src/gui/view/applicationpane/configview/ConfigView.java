@@ -59,8 +59,6 @@ public class ConfigView implements SubViews {
         configInputs.add(createWebcamSelection(), 1, 0);
         configInputs.add(new Text("Speicherort"), 0, 1);
         configInputs.add(createSaveDirectoryInput(), 1, 1);
-        // configInputs.add(new Text("Bildformat"), 0, 2);
-        // configInputs.add(createFileEndingInput(), 1, 2);
         configInputs.add(new Text("Wiederholrate (s)"), 0, 3);
         configInputs.add(createDelayInput(), 1, 3);
         configInputs.setHgap(5.0);
@@ -68,7 +66,6 @@ public class ConfigView implements SubViews {
     }
 
     private void setupBindings() {
-        // TODO bind cam selection
         allConfigDone.bind(directoryName.isNotEqualTo(chooseDirectoryUiText));
     }
 

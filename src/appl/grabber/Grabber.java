@@ -12,7 +12,7 @@ import javafx.beans.property.IntegerProperty;
  */
 public interface Grabber {
 
-    Camera getCamera();
+    Camera getCameraModule();
 
     BooleanProperty isRunning();
 

@@ -40,7 +40,7 @@ public class GrabberImpl implements Grabber {
     }
 
     @Override
-    public Camera getCamera() {
+    public Camera getCameraModule() {
         return camera;
     }
 
@@ -65,7 +65,7 @@ public class GrabberImpl implements Grabber {
             System.out.println("Grabber starts working: " + new Date().toString());
             camera.shouldListenForWebcams(false);
             camera.saveTo(directory);
-            cameraTask = executorService.scheduleWithFixedDelay(camera, 0, Integer.toUnsignedLong(repetitionRate.getValue()), TimeUnit.SECONDS);
+            cameraTask = executorService.scheduleWithFixedDelay(camera, 0, repetitionRate.getValue().longValue(), TimeUnit.SECONDS);
         } else {
             // TODO show an prompt to the user if something is not set
             System.out.println("Grabber stopped working because camera or the configuration is not ready: " + new Date().toString());

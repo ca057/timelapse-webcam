@@ -35,7 +35,7 @@ public class ConfigController {
     }
 
     public ObservableList<Webcam> getAvailableWebcamNames() {
-        return grabber.getCamera().getAvailableWebcams();
+        return grabber.getCameraModule().getAvailableWebcams();
     }
 
     public void setWebcam(Webcam camera) throws ControllerException {
@@ -82,7 +82,7 @@ public class ConfigController {
     }
 
     public Webcam getCurrentWebcam() {
-        return grabber.getCamera().getCurrentWebcam();
+        return grabber.getCameraModule().getCurrentWebcam();
     }
 
 }
