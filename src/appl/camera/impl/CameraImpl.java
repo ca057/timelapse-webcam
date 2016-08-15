@@ -4,13 +4,10 @@ import appl.camera.Camera;
 import appl.camera.exceptions.CameraException;
 import appl.util.Checker;
 import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamDiscoveryEvent;
-import com.github.sarxos.webcam.WebcamDiscoveryListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Date;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.imageio.ImageIO;
@@ -29,7 +26,6 @@ public class CameraImpl implements Camera {
     public CameraImpl() {
         this.cameras = FXCollections.observableArrayList(Webcam.getWebcams());
         this.webcam = Webcam.getDefault();
-        listenForWebcams();
     }
 
     @Override
@@ -96,23 +92,5 @@ public class CameraImpl implements Camera {
             throw new IllegalArgumentException("The passed path is either null or does not lead to an directory.");
         }
         this.directory = path;
-    }
-
-    private void listenForWebcams() {
-        Webcam.addDiscoveryListener(new WebcamDiscoveryListener() {
-            @Override
-            public void webcamFound(WebcamDiscoveryEvent event) {
-                Platform.runLater(() -> {
-                    cameras.add(event.getWebcam());
-                });
-            }
-
-            @Override
-            public void webcamGone(WebcamDiscoveryEvent event) {
-                Platform.runLater(() -> {
-                    cameras.remove(event.getWebcam());
-                });
-            }
-        });
     }
 }

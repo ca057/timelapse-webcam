@@ -3,8 +3,11 @@ package gui.controller;
 import appl.timelapse.Timelapse;
 import appl.timelapse.exceptions.TimelapseException;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamDiscoveryEvent;
+import com.github.sarxos.webcam.WebcamDiscoveryListener;
 import gui.controller.exceptions.ControllerException;
 import gui.view.mainstage.MainStage;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 
@@ -14,6 +17,7 @@ import javafx.collections.ObservableList;
 public class MainController {
 
     private Timelapse timelapse;
+    private WebcamDiscoveryListener webcamListener;
     private MainStage mainStage;
 
     private ControlsController controlsController;
@@ -25,6 +29,9 @@ public class MainController {
             throw new IllegalArgumentException("Passed timelapse module is null.");
         }
         this.timelapse = timelapse;
+        this.webcamListener = createWebcamDiscoveryListener(timelapse.getCameraModule().getAvailableWebcams());
+        this.timelapse.setWebcamDiscoveryListener(webcamListener);
+
         this.configController = new ConfigController(this);
         this.controlsController = new ControlsController(this);
         this.imageController = new ImageController();
@@ -76,8 +83,27 @@ public class MainController {
     }
 
     public void stopApplication() {
+        timelapse.removeWebcamDiscoveryListener(webcamListener);
         timelapse.shutdown();
         mainStage.close();
         System.exit(0);
+    }
+
+    private WebcamDiscoveryListener createWebcamDiscoveryListener(ObservableList<Webcam> cameras) {
+        return new WebcamDiscoveryListener() {
+            @Override
+            public void webcamFound(WebcamDiscoveryEvent event) {
+                Platform.runLater(() -> {
+                    cameras.add(event.getWebcam());
+                });
+            }
+
+            @Override
+            public void webcamGone(WebcamDiscoveryEvent event) {
+                Platform.runLater(() -> {
+                    cameras.remove(event.getWebcam());
+                });
+            }
+        };
     }
 }

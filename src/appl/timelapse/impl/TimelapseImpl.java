@@ -6,6 +6,7 @@ import appl.camera.impl.CameraImpl;
 import appl.timelapse.Timelapse;
 import appl.timelapse.exceptions.TimelapseException;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamDiscoveryListener;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
@@ -44,6 +45,16 @@ public class TimelapseImpl implements Timelapse {
             throw new IllegalArgumentException("The passed camera is null.");
         }
         this.camera.setWebcam(camera);
+    }
+
+    @Override
+    public boolean setWebcamDiscoveryListener(WebcamDiscoveryListener listener) {
+        return Webcam.addDiscoveryListener(listener);
+    }
+
+    @Override
+    public boolean removeWebcamDiscoveryListener(WebcamDiscoveryListener listener) {
+        return Webcam.removeDiscoveryListener(listener);
     }
 
     @Override
