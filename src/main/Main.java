@@ -1,7 +1,7 @@
 package main;
 
-import appl.grabber.Grabber;
-import appl.grabber.impl.GrabberImpl;
+import appl.timelapse.Timelapse;
+import appl.timelapse.impl.TimelapseImpl;
 import gui.controller.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -10,8 +10,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Grabber grabber = new GrabberImpl();
-        new MainController(grabber).showView();
+        Timelapse timelapse = new TimelapseImpl();
+        new MainController(timelapse).showView();
     }
 
     public static void main(String[] args) {

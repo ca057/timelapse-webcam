@@ -2,7 +2,6 @@ package gui.view.applicationpane.controlview;
 
 import gui.controller.ControlsController;
 import gui.controller.exceptions.ControllerException;
-import gui.view.applicationpane.ApplicationPane;
 import gui.view.applicationpane.SubViews;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -18,21 +17,20 @@ import javafx.scene.layout.VBox;
 public class ControlView implements SubViews {
 
     private final BooleanProperty isRunning;
-
-    private final ApplicationPane applicationPane;
+    private final BooleanProperty isReady;
 
     private VBox elementContainer;
     private ControlsController controlsController;
 
     private final double prefButtonWidth = 75;
 
-    public ControlView(ControlsController controlsController, ApplicationPane pane) {
-        if (controlsController == null || pane == null) {
-            throw new IllegalArgumentException("Passed ControlsController or ApplicationPane is null.");
+    public ControlView(ControlsController controlsController) {
+        if (controlsController == null) {
+            throw new IllegalArgumentException("Passed ControlsController is null.");
         }
         this.controlsController = controlsController;
         this.isRunning = new SimpleBooleanProperty(false);
-        this.applicationPane = pane;
+        this.isReady = new SimpleBooleanProperty(false);
         elementContainer = new VBox(createStartButton(), createStopButton());
         elementContainer.setSpacing(5);
         elementContainer.setPrefWidth(prefButtonWidth);
@@ -43,11 +41,11 @@ public class ControlView implements SubViews {
         startButton.setText("START");
         startButton.setDefaultButton(true);
         startButton.setPrefWidth(prefButtonWidth);
-        startButton.disableProperty().bind(Bindings.or(isRunning, applicationPane.getAllConfigDoneProperty().not()));
+        startButton.disableProperty().bind(Bindings.or(isRunning, isReady.not()));
         startButton.setOnAction((ActionEvent event) -> {
             try {
                 event.consume();
-                controlsController.startGrabbing();
+                controlsController.startTimelapse();
             } catch (ControllerException e) {
                 // TODO show error
             }
@@ -63,7 +61,7 @@ public class ControlView implements SubViews {
         stopButton.disableProperty().bind(isRunning.not());
         stopButton.setOnAction((ActionEvent event) -> {
             try {
-                controlsController.stopGrabbing();
+                controlsController.stopTimelapse();
             } catch (ControllerException e) {
                 // TODO show error view
             }
@@ -80,4 +78,7 @@ public class ControlView implements SubViews {
         return isRunning;
     }
 
+    public BooleanProperty isReadyProperty() {
+        return isReady;
+    }
 }
