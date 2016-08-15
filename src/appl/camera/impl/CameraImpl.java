@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Date;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.imageio.ImageIO;
@@ -27,7 +28,7 @@ public class CameraImpl implements Camera {
 
     public CameraImpl() {
         this.cameras = FXCollections.observableArrayList(Webcam.getWebcams());
-        webcam = Webcam.getDefault();
+        this.webcam = Webcam.getDefault();
         listenForWebcams();
     }
 
@@ -101,12 +102,16 @@ public class CameraImpl implements Camera {
         Webcam.addDiscoveryListener(new WebcamDiscoveryListener() {
             @Override
             public void webcamFound(WebcamDiscoveryEvent event) {
-                cameras.add(event.getWebcam());
+                Platform.runLater(() -> {
+                    cameras.add(event.getWebcam());
+                });
             }
 
             @Override
             public void webcamGone(WebcamDiscoveryEvent event) {
-                cameras.remove(event.getWebcam());
+                Platform.runLater(() -> {
+                    cameras.remove(event.getWebcam());
+                });
             }
         });
     }

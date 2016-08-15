@@ -2,6 +2,7 @@ package gui.view.applicationpane.configview;
 
 import com.github.sarxos.webcam.Webcam;
 import gui.controller.ConfigController;
+import gui.controller.exceptions.ControllerException;
 import gui.view.applicationpane.SubViews;
 import java.util.function.UnaryOperator;
 import javafx.beans.property.BooleanProperty;
@@ -70,11 +71,21 @@ public class ConfigView implements SubViews {
     private Node createWebcamSelection() {
         ObservableList<Webcam> cams = configController.getAvailableWebcams();
         ComboBox<Webcam> camSelection = new ComboBox<>(cams);
+
         camSelection.getSelectionModel().select(configController.getCurrentWebcam());
         camSelection.disableProperty().bind(isRunning);
 
         camSelection.setButtonCell(new CameraCell());
         camSelection.setCellFactory((ListView<Webcam> p) -> new CameraCell());
+
+        camSelection.setOnAction((ActionEvent event) -> {
+            event.consume();
+            try {
+                configController.setWebcam(camSelection.getValue());
+            } catch (ControllerException ex) {
+                // TODO show error view
+            }
+        });
 
         return camSelection;
     }

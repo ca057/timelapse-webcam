@@ -17,8 +17,10 @@ class CameraCell extends ListCell<Webcam> {
     @Override
     protected void updateItem(Webcam camera, boolean empty) {
         super.updateItem(camera, empty);
-        if (camera != null) {
-            setText(camera.getName());
+        if (!empty) {
+            if (camera != null) {
+                setText(camera.getName());
+            }
         }
     }
 }

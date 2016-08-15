@@ -1,6 +1,7 @@
 package gui.controller;
 
 import com.github.sarxos.webcam.Webcam;
+import gui.controller.exceptions.ControllerException;
 import gui.view.applicationpane.configview.ConfigView;
 import java.io.File;
 import java.nio.file.Path;
@@ -53,6 +54,10 @@ public class ConfigController {
         } else {
             // TODO show error window
         }
+    }
+
+    public void setWebcam(Webcam webcam) throws ControllerException {
+        mainController.setWebcam(webcam);
     }
 
     public ConfigView getConfigView() {

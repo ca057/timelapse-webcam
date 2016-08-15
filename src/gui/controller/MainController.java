@@ -25,8 +25,8 @@ public class MainController {
             throw new IllegalArgumentException("Passed timelapse module is null.");
         }
         this.timelapse = timelapse;
-        this.controlsController = new ControlsController(this);
         this.configController = new ConfigController(this);
+        this.controlsController = new ControlsController(this);
         this.imageController = new ImageController();
         this.mainStage = new MainStage(this, imageController, configController, controlsController);
     }
@@ -61,6 +61,14 @@ public class MainController {
 
     Webcam getCurrentWebcam() {
         return timelapse.getCameraModule().getCurrentWebcam();
+    }
+
+    void setWebcam(Webcam webcam) throws ControllerException {
+        try {
+            timelapse.setCamera(webcam);
+        } catch (TimelapseException e) {
+            throw new ControllerException("Setting the webcam throwed an error: " + e.getMessage());
+        }
     }
 
     public void showView() {
