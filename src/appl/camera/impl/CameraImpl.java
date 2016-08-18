@@ -34,6 +34,7 @@ public class CameraImpl implements Camera {
     @Override
     public void run() {
         if (!webcam.isOpen() && Checker.isCorrectDirectory.negate().test(directory)) {
+            // TODO throw error
             System.err.println("Webcam is not open or directory is not set.");
             return;
         }
