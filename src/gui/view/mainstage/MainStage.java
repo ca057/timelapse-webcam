@@ -25,8 +25,7 @@ public class MainStage extends Stage {
         Scene scene = new Scene(rootPane.getPane());
 
         this.setTitle("TIMELAPSE WEBCAM");
-        this.setMinWidth(500);
-        this.setMinHeight(500);
+        this.setResizable(false);
         this.setScene(scene);
         this.setOnCloseRequest((WindowEvent we) -> {
             we.consume();

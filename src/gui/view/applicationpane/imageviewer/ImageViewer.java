@@ -70,7 +70,7 @@ public class ImageViewer implements SubViews {
         panel.setMaxSize(Double.MAX_VALUE, Double.MIN_VALUE);
         panel.setMinSize(400, 300);
         panel.setBackground(new Background(new BackgroundFill(Paint.valueOf("#727272"), CornerRadii.EMPTY, Insets.EMPTY)));
-        Text previewText = new Text("Vorschau");
+        Text previewText = new Text("Vorschau derzeit nicht verfügbar");
         previewText.setFill(Paint.valueOf("#FAFAFA"));
         panel.setCenter(previewText);
         return panel;
@@ -80,7 +80,8 @@ public class ImageViewer implements SubViews {
         Button preview = new Button();
         StringProperty buttonText = new SimpleStringProperty("Vorschau");
         preview.textProperty().bind(buttonText);
-        preview.disableProperty().bind(livePreviewLoading);
+        // preview.disableProperty().bind(livePreviewLoading);
+        preview.setDisable(true);
 
         livePreviewLoading.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue == true && oldValue == false) {
