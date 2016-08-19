@@ -115,4 +115,8 @@ public class CameraImpl implements Camera {
     public void turnCameraOffAfterCapture(boolean turnOff) {
         turnOffAfterCapture = turnOff;
     }
+
+    public boolean getTurnCameraOffAfterCapture() {
+        return turnOffAfterCapture;
+    }
 }
