@@ -22,7 +22,7 @@ public class ControlView implements SubViews {
     private VBox elementContainer;
     private ControlsController controlsController;
 
-    private final double prefButtonWidth = 75;
+    private final double minButtonWidth = 75;
 
     public ControlView(ControlsController controlsController) {
         if (controlsController == null) {
@@ -33,14 +33,14 @@ public class ControlView implements SubViews {
         this.isReady = new SimpleBooleanProperty(false);
         elementContainer = new VBox(createStartButton(), createStopButton());
         elementContainer.setSpacing(5);
-        elementContainer.setPrefWidth(prefButtonWidth);
+        elementContainer.setMinWidth(minButtonWidth);
     }
 
     private Node createStartButton() {
         Button startButton = new Button();
         startButton.setText("START");
         startButton.setDefaultButton(true);
-        startButton.setPrefWidth(prefButtonWidth);
+        startButton.setMinWidth(minButtonWidth);
         startButton.disableProperty().bind(Bindings.or(isRunning, isReady.not()));
         startButton.setOnAction((ActionEvent event) -> {
             try {
@@ -56,7 +56,7 @@ public class ControlView implements SubViews {
     private Node createStopButton() {
         Button stopButton = new Button();
         stopButton.setText("STOP");
-        stopButton.setPrefWidth(prefButtonWidth);
+        stopButton.setPrefWidth(minButtonWidth);
         stopButton.setCancelButton(true);
         stopButton.disableProperty().bind(isRunning.not());
         stopButton.setOnAction((ActionEvent event) -> {

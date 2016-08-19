@@ -12,22 +12,21 @@ import javafx.stage.WindowEvent;
 public class MainStage extends Stage {
 
     public MainStage(MainController mainController,
-            ImageController imageController,
+            ImageViewerController imageViewerController,
             ConfigController configController,
             ControlsController controlsController) {
         if (mainController == null
-                || imageController == null
+                || imageViewerController == null
                 || configController == null
                 || controlsController == null) {
             throw new IllegalArgumentException("One of the passed controllers is null.");
         }
-        ApplicationPane rootPane = new ApplicationPane(mainController, controlsController, configController);
-
+        ApplicationPane rootPane = new ApplicationPane(mainController, controlsController, configController, imageViewerController);
         Scene scene = new Scene(rootPane.getPane());
 
         this.setTitle("TIMELAPSE WEBCAM");
+        this.setResizable(false);
         this.setScene(scene);
-        this.resizableProperty().setValue(false);
         this.setOnCloseRequest((WindowEvent we) -> {
             we.consume();
             mainController.stopApplication();

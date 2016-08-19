@@ -2,8 +2,8 @@ package gui.view.applicationpane;
 
 import gui.controller.ConfigController;
 import gui.controller.ControlsController;
+import gui.controller.ImageViewerController;
 import gui.controller.MainController;
-import gui.view.applicationpane.imageviewer.ImageViewer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
@@ -17,19 +17,21 @@ public class ApplicationPane extends GridPane {
 
     private final VBox pane;
 
-    public ApplicationPane(MainController mainController, ControlsController controlsController, ConfigController configController) {
-        if (mainController == null || controlsController == null || configController == null) {
+    public ApplicationPane(MainController mainController, ControlsController controlsController, ConfigController configController, ImageViewerController imageViewerController) {
+        if (mainController == null || controlsController == null || configController == null || imageViewerController == null) {
             throw new IllegalArgumentException("One of the passed controllers is null.");
         }
-        ImageViewer imageViewer = new ImageViewer();
 
         HBox controlElements = new HBox(configController.getConfigView().getNode(), controlsController.getControlView().getNode());
 
         controlElements.setSpacing(5.0);
         controlElements.setAlignment(Pos.CENTER);
 
-        pane = new VBox(imageViewer.getNode(), controlElements);
+        pane = new VBox(imageViewerController.getImageViewer().getNode(), controlElements);
+        pane.setSpacing(5);
+        pane.setFillWidth(true);
         pane.setPadding(new Insets(5));
+        pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     }
 
     public VBox getPane() {

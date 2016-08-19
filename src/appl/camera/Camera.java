@@ -18,6 +18,8 @@ public interface Camera extends Runnable {
 
     boolean makeItReady() throws CameraException;
 
+    boolean turnItOff();
+
     void shouldListenForWebcams(boolean value);
 
     void saveTo(Path path);

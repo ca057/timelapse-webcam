@@ -98,4 +98,9 @@ public class CameraImpl implements Camera {
         }
         this.directory = path;
     }
+
+    @Override
+    public boolean turnItOff() {
+        return this.webcam.close();
+    }
 }
