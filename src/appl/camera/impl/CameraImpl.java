@@ -21,10 +21,10 @@ import javax.imageio.ImageIO;
 public class CameraImpl implements Camera {
 
     private Webcam webcam;
-
     private final ObservableList<Webcam> cameras;
-
     private Path directory;
+
+    private boolean turnOffAfterCapture = true;
 
     public CameraImpl() {
         this.cameras = FXCollections.observableArrayList(Webcam.getWebcams());
@@ -33,9 +33,13 @@ public class CameraImpl implements Camera {
 
     @Override
     public void run() {
-        if (!webcam.isOpen() && Checker.isCorrectDirectory.negate().test(directory)) {
-            System.err.println("Webcam is not open or directory is not set.");
+        if (Checker.isCorrectDirectory.negate().test(directory)) {
+            // TODO throw error
+            System.err.println("Directory is not set.");
             return;
+        }
+        if (!webcam.isOpen()) {
+            webcam.open();
         }
         String fileName = new Date().toString().replace(" ", "_").replace(":", "-").concat(".jpg");
         System.out.println("Camera takes an image: " + fileName);
@@ -46,6 +50,10 @@ public class CameraImpl implements Camera {
             Files.setLastModifiedTime(Paths.get(file.getPath()), FileTime.fromMillis(System.currentTimeMillis()));
         } catch (IOException ignore) {
             System.err.println("IOException occured while writing the file: " + fileName + "; " + ignore.getMessage());
+        } finally {
+            if (turnOffAfterCapture) {
+                webcam.close();
+            }
         }
     }
 
@@ -72,7 +80,7 @@ public class CameraImpl implements Camera {
     }
 
     @Override
-    public boolean makeItReady() throws CameraException {
+    public boolean turnCameraOn() throws CameraException {
         if (webcam == null) {
             throw new CameraException("The camera which should get opened is not set.");
         }
@@ -96,5 +104,19 @@ public class CameraImpl implements Camera {
             throw new IllegalArgumentException("The passed path is either null or does not lead to an directory.");
         }
         this.directory = path;
+    }
+
+    @Override
+    public boolean turnCameraOff() {
+        return this.webcam.close();
+    }
+
+    @Override
+    public void turnCameraOffAfterCapture(boolean turnOff) {
+        turnOffAfterCapture = turnOff;
+    }
+
+    public boolean getTurnCameraOffAfterCapture() {
+        return turnOffAfterCapture;
     }
 }

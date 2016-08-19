@@ -68,6 +68,10 @@ public class ConfigController {
         return configView.allConfigDoneProperty();
     }
 
+    public BooleanProperty getTurnsOffBetweenCapturesProperty() {
+        return mainController.turnsOffBetweenCapturesProperty();
+    }
+
     public Webcam getCurrentWebcam() {
         return mainController.getCurrentWebcam();
     }

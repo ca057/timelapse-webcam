@@ -28,6 +28,7 @@ public class TimelapseImpl implements Timelapse {
 
     private final BooleanProperty isReady = new SimpleBooleanProperty();
     private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
+    private final BooleanProperty turnsCameraOffBetweenCaptures = new SimpleBooleanProperty(true);
 
     public TimelapseImpl() {
         camera = new CameraImpl();
@@ -65,7 +66,7 @@ public class TimelapseImpl implements Timelapse {
         if (makeCameraReady()) {
             isRunning.setValue(true);
             camera.shouldListenForWebcams(false);
-
+            camera.turnCameraOffAfterCapture(turnsCameraOffBetweenCaptures.getValue());
             camera.saveTo(targetDirectory);
             cameraTask = executorService.scheduleWithFixedDelay(camera, 0, repetitionRate, TimeUnit.SECONDS);
         } else {
@@ -82,6 +83,7 @@ public class TimelapseImpl implements Timelapse {
         cameraTask.cancel(true);
         isRunning.setValue(false);
         System.out.println("Grabber stops working.");
+        turnCameraOff();
         camera.shouldListenForWebcams(true);
     }
 
@@ -104,14 +106,23 @@ public class TimelapseImpl implements Timelapse {
 
     private boolean makeCameraReady() throws TimelapseException {
         try {
-            return camera.makeItReady();
+            return camera.turnCameraOn();
         } catch (CameraException e) {
             throw new TimelapseException(e.getMessage());
         }
     }
 
+    private boolean turnCameraOff() {
+        return camera.turnCameraOff();
+    }
+
     @Override
     public BooleanProperty isRunning() {
         return isRunning;
+    }
+
+    @Override
+    public BooleanProperty turnsCameraOffBetweenCaptures() {
+        return turnsCameraOffBetweenCaptures;
     }
 }

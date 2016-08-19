@@ -19,15 +19,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 /**
- * Created by ca on 16/07/16.
+ * @author Christian Ost
  */
 public class ConfigView implements SubViews {
 
@@ -60,6 +62,8 @@ public class ConfigView implements SubViews {
         configInputs.add(createSaveDirectoryInput(), 1, 1);
         configInputs.add(new Text("Wiederholrate (s)"), 0, 3);
         configInputs.add(createDelayInput(), 1, 3);
+        configInputs.add(new Text("Webcam"), 0, 4);
+        configInputs.add(createWebcamSettings(), 1, 4);
         configInputs.setHgap(5.0);
         configInputs.setVgap(5);
     }
@@ -124,6 +128,14 @@ public class ConfigView implements SubViews {
             }
         });
         return input;
+    }
+
+    private Node createWebcamSettings() {
+        RadioButton spareWebcam = new RadioButton("zwischen Aufnahmen schließen");
+        spareWebcam.selectedProperty().bindBidirectional(configController.getTurnsOffBetweenCapturesProperty());
+        spareWebcam.disableProperty().bind(isRunning);
+        spareWebcam.tooltipProperty().set(new Tooltip("Schließt den Zugriff auf die Webcam zwischen zwei Aufnahmen, um diese zu schonen. Der erneute Zugriff vor jeder Aufnahme verzögert diese um ungefähr 5s."));
+        return spareWebcam;
     }
 
     public BooleanProperty isRunningProperty() {
