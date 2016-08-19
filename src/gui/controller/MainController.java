@@ -22,7 +22,7 @@ public class MainController {
 
     private ControlsController controlsController;
     private ConfigController configController;
-    private ImageController imageController;
+    private ImageViewerController imageViewerController;
 
     public MainController(Timelapse timelapse) {
         if (timelapse == null) {
@@ -34,8 +34,8 @@ public class MainController {
 
         this.configController = new ConfigController(this);
         this.controlsController = new ControlsController(this);
-        this.imageController = new ImageController();
-        this.mainStage = new MainStage(this, imageController, configController, controlsController);
+        this.imageViewerController = new ImageViewerController();
+        this.mainStage = new MainStage(this, imageViewerController, configController, controlsController);
     }
 
     void startTimelapse() throws ControllerException {

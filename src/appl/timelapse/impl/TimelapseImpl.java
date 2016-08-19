@@ -82,6 +82,7 @@ public class TimelapseImpl implements Timelapse {
         cameraTask.cancel(true);
         isRunning.setValue(false);
         System.out.println("Grabber stops working.");
+        turnCameraOff();
         camera.shouldListenForWebcams(true);
     }
 
@@ -108,6 +109,10 @@ public class TimelapseImpl implements Timelapse {
         } catch (CameraException e) {
             throw new TimelapseException(e.getMessage());
         }
+    }
+
+    private boolean turnCameraOff() {
+        return camera.turnItOff();
     }
 
     @Override
