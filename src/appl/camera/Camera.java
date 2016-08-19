@@ -16,9 +16,11 @@ public interface Camera extends Runnable {
 
     void setWebcam(Webcam webcam);
 
-    boolean makeItReady() throws CameraException;
+    boolean turnCameraOn() throws CameraException;
 
-    boolean turnItOff();
+    boolean turnCameraOff();
+
+    void turnCameraOffAfterCapture(boolean turnOff);
 
     void shouldListenForWebcams(boolean value);
 

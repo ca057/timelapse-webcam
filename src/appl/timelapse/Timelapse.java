@@ -16,6 +16,8 @@ public interface Timelapse {
 
     BooleanProperty isRunning();
 
+    BooleanProperty turnsCameraOffBetweenCaptures();
+
     void setCamera(Webcam camera) throws TimelapseException;
 
     public boolean setWebcamDiscoveryListener(WebcamDiscoveryListener listener);

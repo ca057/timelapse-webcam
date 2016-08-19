@@ -62,6 +62,10 @@ public class MainController {
         return configController.getAllConfigDone();
     }
 
+    BooleanProperty turnsOffBetweenCapturesProperty() {
+        return timelapse.turnsCameraOffBetweenCaptures();
+    }
+
     ObservableList<Webcam> getAvailableWebcams() {
         return timelapse.getCameraModule().getAvailableWebcams();
     }
