@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon></icon>
+  <icon>/home/ca/projects/timelapse-webcam/assets/favicon.ico</icon>
   <singleInstance>
     <mutexName>Timelapse Webcam</mutexName>
     <windowTitle></windowTitle>
@@ -27,13 +27,19 @@
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
   </jre>
+  <splash>
+    <file>/home/ca/projects/timelapse-webcam/assets/launch.bmp</file>
+    <waitForWindow>true</waitForWindow>
+    <timeout>60</timeout>
+    <timeoutErr>true</timeoutErr>
+  </splash>
   <versionInfo>
     <fileVersion>0.1.0.0</fileVersion>
     <txtFileVersion>0.1.0</txtFileVersion>
     <fileDescription>Timelapse Webcam</fileDescription>
     <copyright>2016, Christian Ost</copyright>
-    <productVersion>0.1.1.0</productVersion>
-    <txtProductVersion>0.1.1</txtProductVersion>
+    <productVersion>0.1.2.0</productVersion>
+    <txtProductVersion>0.2.1</txtProductVersion>
     <productName>Timelapse Webcam</productName>
     <companyName>christianost.de</companyName>
     <internalName>timelapse-webcam</internalName>
